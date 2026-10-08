@@ -1,430 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VIP Access & AI Prompt Unlocker</title>
-  <!-- Client-Side Tesseract OCR Engine -->
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Apex AI — Cyber Interface</title>
+<style>
+:root{
+  --bg:#020608; --panel:#071014; --line:#12323a; --cyan:#00f5ff;
+  --blue:#287cff; --green:#00ff88; --red:#ff315c; --text:#d9fbff; --muted:#6f9aa1;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:
+  radial-gradient(circle at 50% -10%,#083e52 0,#031017 32%,#010405 70%);
+  color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  min-height:100vh;overflow-x:hidden;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;
+  background:linear-gradient(rgba(0,245,255,.7) 1px,transparent 1px),
+             linear-gradient(90deg,rgba(0,245,255,.7) 1px,transparent 1px);
+  background-size:38px 38px;mask-image:linear-gradient(to bottom,black,transparent);
+}
+.wrap{width:min(1100px,94%);margin:auto;padding:22px 0 45px}
+.top{
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+  padding:15px 18px;border:1px solid var(--line);background:rgba(3,13,17,.85);
+  box-shadow:0 0 28px rgba(0,245,255,.08);position:sticky;top:10px;z-index:5;
+}
+.brand{font-size:24px;font-weight:900;letter-spacing:2px;color:white}
+.brand span{color:var(--cyan)}
+.status{font-size:11px;color:var(--green);border:1px solid #0b704d;padding:7px 10px;border-radius:4px}
+.hero{text-align:center;padding:35px 10px 22px}
+.kicker{color:var(--cyan);font-size:11px;letter-spacing:4px}
+h1{font-size:clamp(34px,8vw,70px);margin:8px 0;
+  text-shadow:0 0 22px rgba(0,245,255,.55);letter-spacing:5px}
+.sub{color:var(--muted);max-width:700px;margin:auto;font-size:13px;line-height:1.7}
+.grid{display:grid;grid-template-columns:1.45fr .8fr;gap:16px}
+.card{
+  background:linear-gradient(145deg,rgba(7,20,24,.96),rgba(2,8,10,.96));
+  border:1px solid var(--line);box-shadow:0 0 30px rgba(0,0,0,.35),inset 0 0 25px rgba(0,245,255,.025);
+  padding:16px;border-radius:8px;
+}
+.title{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+.title b{font-size:13px;letter-spacing:1px}.tag{font-size:10px;color:var(--cyan)}
+.video-box{aspect-ratio:16/9;background:#000;border:1px solid #16404a;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+video{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.progress{height:8px;background:#061317;border:1px solid #12323a;margin-top:13px;overflow:hidden}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));box-shadow:0 0 15px var(--cyan);transition:width .35s}
+.console{
+  height:255px;overflow:auto;background:#010304;border:1px solid #10343c;
+  padding:13px;font-size:11px;line-height:1.65;color:#79b8bf;
+}
+.line.ok{color:var(--green)}.line.warn{color:#ffd166}.line.err{color:var(--red)}.line.alert{color:#ff003c;font-weight:bold;text-shadow:0 0 8px rgba(255,0,60,.6)}.cursor{animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
 
-    body {
-      background-color: #0b0c10;
-      color: #e0e0e0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px 16px;
-    }
+/* Warning Alert Interface */
+.warning-box{
+  display:none;margin-top:14px;padding:16px;border:2px solid var(--red);
+  background:rgba(255,49,92,.08);box-shadow:0 0 28px rgba(255,49,92,.3);
+  text-align:center;animation:pulseWarn 1s infinite alternate;border-radius:6px;
+}
+@keyframes pulseWarn{
+  from{box-shadow:0 0 15px rgba(255,49,92,.25)}
+  to{box-shadow:0 0 35px rgba(255,49,92,.65)}
+}
+.warning-box .w-title{color:var(--red);font-size:15px;font-weight:900;letter-spacing:2px}
+.warning-box .w-timer{color:#fff;font-size:28px;font-weight:bold;margin:8px 0;letter-spacing:3px}
 
-    .card {
-      width: 100%;
-      max-width: 440px;
-      background: #12141a;
-      border: 1px solid rgba(255, 42, 59, 0.25);
-      border-radius: 16px;
-      padding: 28px 20px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 42, 59, 0.15);
-      text-align: center;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 5px 14px;
-      background: rgba(255, 42, 59, 0.12);
-      border: 1px solid #ff2a3b;
-      color: #ff3344;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      border-radius: 20px;
-      margin-bottom: 14px;
-    }
-
-    h1 {
-      font-size: 22px;
-      font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 8px;
-    }
-
-    p.subtitle {
-      font-size: 13px;
-      color: #8b949e;
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
-
-    .step-box {
-      background: #161922;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      text-align: left;
-    }
-
-    .step-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .step-num {
-      font-size: 12px;
-      font-weight: 800;
-      color: #ff3344;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .step-status {
-      font-size: 11px;
-      font-weight: 600;
-      color: #777;
-    }
-
-    .step-status.done {
-      color: #00e676;
-    }
-
-    .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 13px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      border: none;
-      transition: all 0.2s ease;
-    }
-
-    .btn-insta {
-      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      color: #ffffff;
-      box-shadow: 0 4px 15px rgba(220, 39, 67, 0.3);
-    }
-
-    .btn-insta:active {
-      transform: scale(0.98);
-    }
-
-    .file-dropzone {
-      border: 2px dashed rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      padding: 20px 14px;
-      text-align: center;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.02);
-      display: block;
-      transition: border-color 0.2s ease;
-    }
-
-    .file-dropzone:hover {
-      border-color: #ff3344;
-    }
-
-    .file-dropzone input {
-      display: none;
-    }
-
-    .dropzone-label {
-      font-size: 13px;
-      color: #8b949e;
-    }
-
-    .preview-container {
-      display: none;
-      margin-top: 12px;
-      text-align: center;
-    }
-
-    .preview-container img {
-      max-width: 100%;
-      max-height: 160px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-verify {
-      background: #ff2a3b;
-      color: #ffffff;
-      margin-top: 12px;
-      box-shadow: 0 4px 15px rgba(255, 42, 59, 0.35);
-    }
-
-    .btn-verify:disabled {
-      background: #232733;
-      color: #666;
-      box-shadow: none;
-      cursor: not-allowed;
-    }
-
-    .notice {
-      font-size: 12px;
-      color: #ffaa00;
-      margin-top: 10px;
-      display: none;
-      background: rgba(255, 170, 0, 0.1);
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 170, 0, 0.2);
-    }
-
-    .progress-box {
-      display: none;
-      margin-top: 14px;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 6px;
-      background: #202430;
-      border-radius: 6px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #ff2a3b, #00e676);
-      transition: width 0.3s ease;
-    }
-
-    .status-msg {
-      font-size: 12px;
-      color: #ffab00;
-      text-align: center;
-      margin-top: 6px;
-    }
-
-    #unlockedSection {
-      display: none;
-      animation: fadeIn 0.4s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .btn-tg {
-      background: #0088cc;
-      color: #ffffff;
-      box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
-      margin-top: 14px;
-    }
-  </style>
+.field{display:flex;gap:8px;margin-top:12px}
+input[type=text]{
+  width:100%;background:#020708;border:1px solid #16404a;color:#d9fbff;
+  padding:12px;font:inherit;font-size:12px;outline:none;border-radius:4px;
+}
+.send{min-width:85px;cursor:pointer;border:1px solid var(--cyan);background:rgba(0,245,255,.06);color:var(--cyan);font:inherit;border-radius:4px;transition:.2s}
+.send:hover{background:var(--cyan);color:#001014;box-shadow:0 0 18px rgba(0,245,255,.35)}
+.msgs{margin-top:10px;max-height:160px;overflow:auto}
+.msg{padding:9px 10px;border-left:2px solid var(--cyan);background:#031014;margin:6px 0;font-size:11px}
+.success{
+  display:none;text-align:center;margin-top:16px;padding:18px;border:1px solid #00a85b;
+  background:rgba(0,255,136,.05);box-shadow:0 0 25px rgba(0,255,136,.12)
+}
+.success .big{font-size:22px;font-weight:900;color:var(--green);letter-spacing:1px}
+.success small{display:block;color:#80bda7;margin-top:7px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.stat{padding:12px;background:#030a0d;border:1px solid #0d2930}.num{font-size:18px;color:white}.lab{font-size:9px;color:var(--muted);margin-top:3px}
+footer{text-align:center;color:#42636a;font-size:10px;margin-top:22px}
+@media(max-width:780px){.grid{grid-template-columns:1fr}.top{position:relative;top:0}.brand{font-size:19px}}
+</style>
 </head>
 <body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">APEX <span>AI</span></div>
+    <div class="status">● SYSTEM ONLINE</div>
+  </header>
 
-  <div class="card">
-    <div class="badge">VIP ACCESS</div>
-    <h1>AI Prompt Unlocker</h1>
-    <p class="subtitle">Follow on Instagram, upload your profile screenshot clearly showing 'Following', and unlock access to our Telegram channel where the prompt is hosted.</p>
+  <section class="hero">
+    <div class="kicker">ADVANCED CYBER ANALYSIS INTERFACE</div>
+    <h1>APEX AI</h1>
+    <p class="sub">Direct server synchronization terminal and verification sequence stream.</p>
+  </section>
 
-    <!-- STEP 1 -->
-    <div class="step-box" id="step1Box">
-      <div class="step-header">
-        <span class="step-num">Step 1: Follow Page</span>
-        <span class="step-status" id="step1Status">Pending</span>
-      </div>
-      <a href="https://instagram.com/apex.carnage.live" target="_blank" class="btn btn-insta" id="followBtn" onclick="handleFollowClick()">
-        Follow @apex.carnage.live
-      </a>
-    </div>
-
-    <!-- STEP 2 -->
-    <div class="step-box" id="step2Box">
-      <div class="step-header">
-        <span class="step-num">Step 2: Upload Screenshot</span>
-        <span class="step-status" id="step2Status">Waiting for Step 1</span>
+  <main class="grid">
+    <section>
+      <div class="card">
+        <div class="title"><b>GAME CODE ANALYSIS</b><span class="tag">LIVE UNBAN</span></div>
+        <div class="video-box">
+          <video id="video" playsinline></video>
+        </div>
+        <div class="progress"><div class="bar" id="bar"></div></div>
       </div>
 
-      <label class="file-dropzone" for="screenshotInput" id="dropzoneLabel">
-        <div class="dropzone-label" id="dropzoneText">Select follow screenshot</div>
-        <input type="file" id="screenshotInput" accept="image/*" onchange="handleFileSelect(this)">
-      </label>
+      <div class="card" style="margin-top:16px">
+        <div class="title"><b>LIVE CODE STREAM</b><span class="tag">SIMULATION</span></div>
+        <div class="console" id="console">
+          <div class="line">[APEX] Waiting for target UID sequence<span class="cursor">_</span></div>
+        </div>
 
-      <div class="preview-container" id="previewContainer">
-        <img id="screenshotPreview" src="" alt="Screenshot">
-      </div>
+        <!-- Warning Interface Box -->
+        <div class="warning-box" id="warningBox">
+          <div class="w-title">⚠️ CRITICAL SECURITY OVERRIDE IN PROGRESS ⚠️</div>
+          <div class="w-timer" id="timerDisplay">20s</div>
+          <small style="color:#ffb3c0">BYPASSING GATEWAY FIREWALL • DO NOT CLOSE APP</small>
+        </div>
 
-      <div class="notice" id="verificationNotice"></div>
-
-      <button class="btn btn-verify" id="verifyBtn" disabled onclick="verifyScreenshotOCR()">
-        Verify & Unlock Now
-      </button>
-
-      <!-- OCR Progress Tracking -->
-      <div class="progress-box" id="progressBox">
-        <div class="status-msg" id="statusMessage">Scanning screenshot text locally...</div>
-        <div class="progress-track">
-          <div class="progress-bar" id="progressBar"></div>
+        <div class="success" id="success">
+          <div class="big" id="successText">✓ BYPASS SUCCESSFUL • ID UNBAN SUCCESSFUL</div>
+          <small id="successSub">NOW OPENING YOUR GAME... PLEASE WAIT</small>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- UNLOCKED SECTION -->
-    <div class="step-box" id="unlockedSection" style="border-color: rgba(0, 230, 118, 0.4);">
-      <div class="step-header">
-        <span class="step-num" style="color: #00e676;">Verified Successfully</span>
-        <span class="step-status done">Active</span>
+    <aside>
+      <div class="card">
+        <div class="title"><b>MESSAGE TERMINAL</b><span class="tag">UID INPUT</span></div>
+        <div class="field">
+          <input id="uidInput" type="text" placeholder="Enter Player UID (e.g. 123456789)">
+          <button class="send" id="send">SEND</button>
+        </div>
+        <div class="msgs" id="msgs"></div>
       </div>
-      <p style="font-size: 13px; color: #bbb; line-height: 1.5;">
-        Valid proof confirmed! The exclusive AI prompt has been posted inside our official Telegram channel. Click the button below to join and get it immediately:
-      </p>
 
-      <a href="https://t.me/+GJ738f9FKc5mOWRl" target="_blank" class="btn btn-tg">
-        Join Telegram to Get Prompt
-      </a>
-    </div>
-  </div>
+      <div class="card" style="margin-top:16px">
+        <div class="title"><b>SYSTEM STATUS</b><span class="tag">LIVE</span></div>
+        <div class="stats">
+          <div class="stat"><div class="num" id="s1">READY</div><div class="lab">CORE STATUS</div></div>
+          <div class="stat"><div class="num" id="s2">0%</div><div class="lab">ANALYSIS</div></div>
+          <div class="stat"><div class="num">AES-X</div><div class="lab">INTERFACE</div></div>
+          <div class="stat"><div class="num">LOCAL</div><div class="lab">PROCESSING</div></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+  <footer>APEX AI • CYBER INTERFACE • Powered by Apex Carnage Live</footer>
+</div>
 
-  <script>
-    let hasClickedFollow = false;
-    let selectedImageFile = null;
+<script>
+const VIDEO_URL = "https://raw.githubusercontent.com/Rajsekhar001/Promt/main/lv_0_20261008213545.mp4";
 
-    function handleFollowClick() {
-      hasClickedFollow = true;
-      const step1Status = document.getElementById("step1Status");
-      step1Status.innerText = "Completed ✓";
-      step1Status.classList.add("done");
+const video = document.getElementById('video');
+const con = document.getElementById('console');
+const bar = document.getElementById('bar');
+const success = document.getElementById('success');
+const warningBox = document.getElementById('warningBox');
+const timerDisplay = document.getElementById('timerDisplay');
+const s1 = document.getElementById('s1');
+const s2 = document.getElementById('s2');
+const uidInput = document.getElementById('uidInput');
+const msgs = document.getElementById('msgs');
 
-      const step2Status = document.getElementById("step2Status");
-      step2Status.innerText = "Ready to upload";
+function addLine(t, c=''){
+  const d = document.createElement('div');
+  d.className = 'line ' + c;
+  d.textContent = t;
+  con.appendChild(d);
+  con.scrollTop = con.scrollHeight;
+}
 
-      hideNotice();
+document.getElementById('send').onclick = async () => {
+  const uid = uidInput.value.trim();
+  if(!uid) {
+    alert("Kripya pehle UID enter karein!");
+    return;
+  }
 
-      if (selectedImageFile) {
-        document.getElementById("verifyBtn").disabled = false;
-      }
-    }
+  // Display target UID in terminal history
+  const d = document.createElement('div');
+  d.className = 'msg';
+  d.innerHTML = '<b>TARGET UID:</b> ' + uid;
+  msgs.prepend(d);
 
-    function handleFileSelect(input) {
-      if (input.files && input.files[0]) {
-        const file = input.files[0];
+  // Send dabate hi naya video start hoga
+  video.src = VIDEO_URL;
+  video.load();
+  video.play().catch(e => console.log("Video Play Error:", e));
 
-        if (!file.type.startsWith("image/")) {
-          showNotice("Please upload a valid image file (PNG/JPG).");
-          return;
-        }
+  // Reset UI status
+  success.style.display = 'none';
+  warningBox.style.display = 'none';
+  bar.style.width = '0%';
+  s1.textContent = 'RUNNING';
+  s2.textContent = '0%';
+  con.innerHTML = '';
 
-        selectedImageFile = file;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById("screenshotPreview").src = e.target.result;
-          document.getElementById("previewContainer").style.display = "block";
-          document.getElementById("dropzoneText").innerText = "Selected: " + file.name;
+  // Console sequence
+  addLine('[SYS] Initializing target UID synchronization: ' + uid, 'ok');
+  await new Promise(r => setTimeout(r, 600));
 
-          if (!hasClickedFollow) {
-            showNotice("Please click 'Follow @apex.carnage.live' before verifying.");
-            document.getElementById("verifyBtn").disabled = true;
-          } else {
-            hideNotice();
-            document.getElementById("verifyBtn").disabled = false;
-          }
-        };
-        reader.readAsDataURL(file);
-      }
-    }
+  addLine('[STATUS] Unban request rejected: Signature mismatched', 'err');
+  await new Promise(r => setTimeout(r, 700));
+  addLine('[CODE] Initiating deep code cracking protocol...', 'warn');
+  await new Promise(r => setTimeout(r, 800));
+  addLine('[STATUS] Server rejected token renewal (Attempt 2/2)', 'err');
+  await new Promise(r => setTimeout(r, 700));
+  addLine('[CRACK] Penetrating security gate packet validation...', 'warn');
+  bar.style.width = '25%';
+  s2.textContent = '25%';
 
-    async function verifyScreenshotOCR() {
-      if (!hasClickedFollow) {
-        showNotice("Action Required: Please click Step 1 to open Instagram first.");
-        return;
-      }
+  // Show High Warning interface
+  await new Promise(r => setTimeout(r, 600));
+  addLine('[CRITICAL] Heavy firewall intervention intercepted!', 'alert');
+  addLine('[OVERRIDE] Activating brute-force kernel bypass...', 'alert');
+  warningBox.style.display = 'block';
 
-      if (!selectedImageFile) {
-        showNotice("Please select a screenshot first.");
-        return;
-      }
+  // 20-second countdown
+  for (let sec = 20; sec >= 1; sec--) {
+    timerDisplay.textContent = sec + 's';
+    addLine('[BYPASS TIMER] Finalizing authorization payload: ' + sec + 's remaining...', 'warn');
+    const progressVal = 25 + Math.round(((21 - sec) / 20) * 75);
+    bar.style.width = progressVal + '%';
+    s2.textContent = progressVal + '%';
+    await new Promise(r => setTimeout(r, 1000));
+  }
 
-      const verifyBtn = document.getElementById("verifyBtn");
-      const progressBox = document.getElementById("progressBox");
-      const progressBar = document.getElementById("progressBar");
-      const statusMsg = document.getElementById("statusMessage");
+  // Final Success State
+  warningBox.style.display = 'none';
+  bar.style.width = '100%';
+  s2.textContent = '100%';
+  s1.textContent = 'SUCCESS';
 
-      verifyBtn.disabled = true;
-      progressBox.style.display = "block";
-      hideNotice();
-
-      try {
-        statusMsg.innerText = "Loading local OCR engine...";
-        progressBar.style.width = "25%";
-
-        const worker = await Tesseract.createWorker("eng");
-        
-        progressBar.style.width = "55%";
-        statusMsg.innerText = "Scanning username & following text...";
-
-        const result = await worker.recognize(selectedImageFile);
-        
-        const rawText = (result.data.text || "").toLowerCase();
-        const cleanedText = rawText.replace(/[\s\._\-]/g, "");
-
-        await worker.terminate();
-
-        progressBar.style.width = "90%";
-
-        const hasFollowing = rawText.includes("following");
-        const hasUsername = rawText.includes("apex.carnage.live") || 
-                            rawText.includes("apex.carnage") || 
-                            cleanedText.includes("apexcarnagelive") ||
-                            cleanedText.includes("apexcarnage");
-
-        if (hasFollowing && hasUsername) {
-          progressBar.style.width = "100%";
-          statusMsg.innerText = "Verification Confirmed!";
-          
-          setTimeout(() => {
-            document.getElementById("step1Box").style.display = "none";
-            document.getElementById("step2Box").style.display = "none";
-            document.getElementById("unlockedSection").style.display = "block";
-          }, 600);
-        } else if (!hasUsername) {
-          progressBox.style.display = "none";
-          verifyBtn.disabled = false;
-          showNotice("Verification Failed: Screenshot must clearly show the @apex.carnage.live profile.");
-        } else {
-          progressBox.style.display = "none";
-          verifyBtn.disabled = false;
-          showNotice("Verification Failed: 'Following' status not detected. Please make sure you followed the page.");
-        }
-
-      } catch (err) {
-        console.error(err);
-        progressBox.style.display = "none";
-        verifyBtn.disabled = false;
-        showNotice("Scanning failed. Please upload a clearer screenshot.");
-      }
-    }
-
-    function showNotice(msg) {
-      const notice = document.getElementById("verificationNotice");
-      notice.innerText = msg;
-      notice.style.display = "block";
-    }
-
-    function hideNotice() {
-      document.getElementById("verificationNotice").style.display = "none";
-    }
-  </script>
+  addLine('[CONFIRM] Bypass successful! ID unban successful.', 'ok');
+  addLine('[LAUNCH] Now opening your game... Loading profile data.', 'ok');
+  success.style.display = 'block';
+};
+</script>
 </body>
 </html>
