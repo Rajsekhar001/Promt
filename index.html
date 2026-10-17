@@ -115,7 +115,7 @@
       border: 1px solid #008833;
       padding: 10px;
       border-radius: 6px;
-      height: 180px;
+      height: 160px;
       overflow-y: auto;
       margin-bottom: 12px;
       line-height: 1.5;
@@ -143,7 +143,7 @@
       height: 100%;
       background: #00ff66;
       box-shadow: 0 0 10px #00ff66;
-      transition: width 0.3s linear;
+      transition: width 0.8s linear;
     }
     .progress-text {
       position: absolute;
@@ -155,65 +155,13 @@
       font-weight: bold;
       text-shadow: 1px 1px 2px #000;
     }
-
-    /* NATIVE PERMISSION POPUPS */
-    .perm-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(3px);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .perm-box {
-      width: 85%;
-      max-width: 320px;
-      background: #10141f; /* Native Android Dark Mode look */
-      border-radius: 12px;
-      padding: 20px;
-      text-align: left;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
-    }
-    .perm-box h3 {
-      font-size: 16px;
-      margin-bottom: 12px;
-      color: #fff;
-    }
-    .perm-box p {
-      font-size: 13px;
-      color: #a0a5b0;
-      line-height: 1.4;
-      margin-bottom: 20px;
-    }
-    .perm-btns {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-    .perm-btn {
-      background: transparent;
-      border: none;
-      color: #4cd964;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 8px 12px;
-      cursor: pointer;
-      text-transform: uppercase;
-    }
-    .perm-btn-deny {
-      color: #ff3b30;
-    }
-
     .modal-overlay {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: rgba(0, 0, 0, 0.9);
       backdrop-filter: blur(5px);
       justify-content: center;
@@ -271,11 +219,13 @@
       <span>NODE: ROYAL_UNBAN</span>
     </div>
     
+    <!-- Royal Unban Logo -->
     <img src="https://raw.githubusercontent.com/Rajsekhar001/Promt/main/IMG_20261017_122814_174.jpg" alt="ROYAL UNBAN Logo" class="logo" />
     
     <h2>ROYAL UNBAN</h2>
     <p>&gt; SECURE SYSTEM PROTOCOL &lt;</p>
 
+    <!-- Client IP Banner -->
     <div class="ip-box" id="userIpDisplay">TARGET IP: FETCHING...</div>
 
     <!-- STEP 1: KEY VERIFICATION -->
@@ -285,47 +235,22 @@
       <button class="btn" onclick="openTelegram()">[ GET KEY ]</button>
     </div>
 
-    <!-- STEP 2: EXECUTION -->
+    <!-- STEP 2: UID INPUT -->
     <div id="stepUID" style="display: none;">
       <input type="text" id="uidInput" class="input-box" placeholder="ENTER TARGET UID..." />
-      <button class="btn" onclick="executeUnban()">[ EXECUTE UNBAN PROTOCOL ]</button>
+      <button class="btn" onclick="startBypass()">[ EXECUTE UNBAN PROTOCOL ]</button>
     </div>
 
-    <!-- STEP 3: TERMINAL LOGS -->
+    <!-- STEP 3: TERMINAL LOGS & 5-MIN PROGRESS -->
     <div id="terminalConsole"></div>
-    <div class="timer-display" id="timerDisplay">TIME ELAPSED: 00:00 / 00:20</div>
-
+    <div class="timer-display" id="timerDisplay">TIME ELAPSED: 00:00 / 05:00</div>
     <div class="progress-wrapper" id="progressWrapper">
       <div class="progress-fill" id="progressFill"></div>
       <div class="progress-text" id="progressText">0%</div>
     </div>
   </div>
 
-  <!-- SHIZUKU PERMISSION MODAL -->
-  <div class="perm-overlay" id="shizukuModal">
-    <div class="perm-box">
-      <h3>Shizuku Permission</h3>
-      <p>Royal Unban is requesting Shizuku access to perform system-level file operations. Allow?</p>
-      <div class="perm-btns">
-        <button class="perm-btn perm-btn-deny" onclick="denyPermission()">Deny</button>
-        <button class="perm-btn" onclick="acceptShizuku()">Allow</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- STORAGE PERMISSION MODAL -->
-  <div class="perm-overlay" id="storageModal">
-    <div class="perm-box">
-      <h3>Allow access to manage all files?</h3>
-      <p>Royal Unban needs full storage access to inject configuration files into the game directory (Android/data/com.dts.freefiremax/).</p>
-      <div class="perm-btns">
-        <button class="perm-btn perm-btn-deny" onclick="denyPermission()">Deny</button>
-        <button class="perm-btn" onclick="acceptStorage()">Allow</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 85% POPUP MODAL -->
+  <!-- POPUP MODAL (85% HOLD) -->
   <div class="modal-overlay" id="adminModal">
     <div class="modal-box">
       <h3>⚠️ SECURITY HOLD: 85%</h3>
@@ -335,11 +260,7 @@
   </div>
 
   <script>
-    const VALID_KEY = "APEXUNBAN_PAID67G5R8";
-    
-    // Content of localConfig.json
-    const LOCAL_CONFIG_CONTENT = JSON.stringify({"serverUrl":"https://ariyan-a9x-bd-id-unban.vercel.app/id?unben=1bee7f5cef921c02e46e85e0b349c133ba8ac65b5c55405e5c3f9033214a669d"});
-
+    const VALID_KEY = "ROYALUNBAN_PAID67G5R8";
     let clientIP = "127.0.0.1";
     let audioCtx = null;
 
@@ -383,6 +304,7 @@
       } catch (e) {}
     }
 
+    // IP Detection
     fetch("https://api.ipify.org?format=json")
       .then(res => res.json())
       .then(data => {
@@ -393,11 +315,26 @@
         document.getElementById("userIpDisplay").innerText = "CLIENT IP: 103.112.44.18";
       });
 
+    // Telegram Profile @ROYAL_UNBAN
     function openTelegram() {
       window.location.href = "tg://resolve?domain=ROYAL_UNBAN";
       setTimeout(function() {
         window.location.href = "https://t.me/ROYAL_UNBAN";
       }, 500);
+    }
+
+    function verifyKey() {
+      initAudio();
+      playBeep(900, 0.08);
+      const enteredKey = document.getElementById("keyInput").value.trim();
+
+      if (enteredKey === VALID_KEY) {
+        document.getElementById("stepKey").style.display = "none";
+        document.getElementById("stepUID").style.display = "block";
+      } else {
+        alert(">> INVALID ACCESS KEY // REDIRECTING TO @ROYAL_UNBAN...");
+        openTelegram();
+      }
     }
 
     function logTerminal(message) {
@@ -407,86 +344,7 @@
       playBeep(450 + Math.random() * 400, 0.03);
     }
 
-    // --- NATIVE FLOW SIMULATION ---
-    
-    function verifyKey() {
-      initAudio();
-      playBeep(900, 0.08);
-      const enteredKey = document.getElementById("keyInput").value.trim();
-
-      if (enteredKey === VALID_KEY) {
-        document.getElementById("stepKey").style.display = "none";
-        
-        // Step 1: Ask Shizuku Permission
-        document.getElementById("shizukuModal").style.display = "flex";
-      } else {
-        alert(">> INVALID ACCESS KEY // REDIRECTING TO @ROYAL_UNBAN...");
-        openTelegram();
-      }
-    }
-
-    function denyPermission() {
-      alert("Permission denied. System cannot proceed.");
-      document.getElementById("shizukuModal").style.display = "none";
-      document.getElementById("storageModal").style.display = "none";
-      document.getElementById("stepKey").style.display = "block";
-    }
-
-    function acceptShizuku() {
-      playBeep(800, 0.05);
-      document.getElementById("shizukuModal").style.display = "none";
-      
-      // Step 2: Ask Storage Permission
-      setTimeout(() => {
-        document.getElementById("storageModal").style.display = "flex";
-      }, 400);
-    }
-
-    function acceptStorage() {
-      playBeep(850, 0.05);
-      document.getElementById("storageModal").style.display = "none";
-      
-      // Step 3: Inject Config & Show UID
-      document.getElementById("terminalConsole").style.display = "block";
-      logTerminal("> SHIZUKU BRIDGE ESTABLISHED.");
-      logTerminal("> STORAGE ACCESS GRANTED.");
-      logTerminal("> WRITING localConfig.json TO /Android/data/com.dts.freefiremax/...");
-      
-      // Inject real file
-      injectConfig();
-      
-      setTimeout(() => {
-        logTerminal("> CONFIG INJECTED SUCCESSFULLY.");
-        document.getElementById("stepUID").style.display = "block";
-      }, 1500);
-    }
-
-    // --- CONFIG INJECTION (Native Bridge or Download Fallback) ---
-    function injectConfig() {
-      const targetPath = "/storage/emulated/0/Android/data/com.dts.freefiremax/";
-      
-      if (typeof window.AndroidBridge !== 'undefined' && typeof window.AndroidBridge.saveFile === 'function') {
-        try {
-          window.AndroidBridge.saveFile(targetPath, "localConfig.json", LOCAL_CONFIG_CONTENT);
-        } catch (e) {
-          console.log("Native bridge error:", e);
-        }
-      } else {
-        // Fallback for browser testing
-        const blob = new Blob([LOCAL_CONFIG_CONTENT], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "localConfig.json";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }
-    }
-
-    // --- START UNBAN & LAUNCH GAME ---
-    function executeUnban() {
+    function startBypass() {
       initAudio();
       const uid = document.getElementById("uidInput").value.trim();
       if (!uid) {
@@ -495,71 +353,77 @@
       }
 
       document.getElementById("stepUID").style.display = "none";
-      
-      // Attempt to launch Free Fire Max via Intent URL
-      logTerminal("> TRIGGERING GAME CLIENT...");
-      try {
-        // This intent URL attempts to open Free Fire Max directly
-        window.location.href = "intent://launch/#Intent;scheme=freefiremax;package=com.dts.freefiremax;end";
-      } catch (e) {
-        logTerminal("> INTENT FAILED. ENSURE APP IS INSTALLED.");
-      }
-
+      const consoleBox = document.getElementById("terminalConsole");
       const timerDisplay = document.getElementById("timerDisplay");
       const progressWrapper = document.getElementById("progressWrapper");
       const progressFill = document.getElementById("progressFill");
       const progressText = document.getElementById("progressText");
 
+      consoleBox.style.display = "block";
       timerDisplay.style.display = "block";
       progressWrapper.style.display = "block";
 
-      logTerminal(`SESSION INITIALIZED // TARGET UID: [${uid}]`);
+      logTerminal(`SESSION INITIALIZED // ROYAL_UNBAN ROOT`);
+      logTerminal(`TARGET UID REGISTERED: [${uid}]`);
+      logTerminal(`CLIENT IP: [${clientIP}]`);
 
-      // 20 SECONDS TIMER
-      const TOTAL_SECONDS = 20; 
+      const TOTAL_SECONDS = 300; // 5 Minutes = 300 seconds
       let elapsedSeconds = 0;
 
+      // Real technical log events scheduled across the 5 minutes
       const timelineLogs = [
-        { sec: 2, msg: "INITIALIZING TLS 1.3 SECURE HANDSHAKE..." },
-        { sec: 4, msg: "PINGING FIREBASE REALTIME REGION (asia-south1)..." },
-        { sec: 6, msg: "CLOUDFLARE WAF DEFENSES DETECTED. APPLYING BYPASS..." },
-        { sec: 8, msg: "CRACKING SHARD CERTIFICATE FOR CLUSTER #03..." },
-        { sec: 10, msg: "INJECTING PROTOBUF PACKET TO GARENA AUTH SERVERS..." },
-        { sec: 12, msg: "RESOLVING UID STATE IN DISTRIBUTED LEDGER..." },
-        { sec: 14, msg: "ROTATING PROXY TUNNEL NODE [Tor-Exit-Node-09]..." },
-        { sec: 16, msg: "OVERRIDING SERVER-SIDE REPUTATION FLAGS..." },
-        { sec: 18, msg: "DE-SYNCHRONIZING BAN RECORD FROM DATABASE..." }
+        { sec: 10, msg: "INITIALIZING TLS 1.3 SECURE HANDSHAKE..." },
+        { sec: 25, msg: "PINGING FIREBASE REALTIME REGION (asia-south1)..." },
+        { sec: 45, msg: "CLOUDFLARE WAF DEFENSES DETECTED. APPLYING BYPASS..." },
+        { sec: 70, msg: "CRACKING SHARD CERTIFICATE FOR CLUSTER #03..." },
+        { sec: 95, msg: "INJECTING PROTOBUF PACKET TO GARENA AUTH SERVERS..." },
+        { sec: 125, msg: "RESOLVING UID STATE IN DISTRIBUTED LEDGER..." },
+        { sec: 155, msg: "ROTATING PROXY TUNNEL NODE [Tor-Exit-Node-09]..." },
+        { sec: 185, msg: "OVERRIDING SERVER-SIDE REPUTATION FLAGS..." },
+        { sec: 220, msg: "DE-SYNCHRONIZING BAN RECORD FROM DATABASE..." },
+        { sec: 250, msg: "APPLYING SHA-256 INTEGRITY HASH VERIFICATION..." },
+        { sec: 280, msg: "ATTEMPTING FINAL CLOUD SYNCHRONIZATION..." }
       ];
 
       const proxyPool = [
         "185.220.101.45 (Tor Relay - Frankfurt)",
         "104.244.42.129 (Nordic Secure Hop)",
-        "45.154.255.88 (Shadowsocks Layer)"
+        "45.154.255.88 (Shadowsocks Layer)",
+        "194.26.29.112 (Ghost Routing Tunnel)",
+        "91.240.118.230 (Encrypted Gateway)"
       ];
 
       const runTimer = setInterval(function() {
         elapsedSeconds++;
 
-        timerDisplay.innerText = `TIME ELAPSED: 00:${String(elapsedSeconds).padStart(2, '0')} / 00:20`;
+        // mm:ss format calculation
+        let mins = Math.floor(elapsedSeconds / 60);
+        let secs = elapsedSeconds % 60;
+        timerDisplay.innerText = `TIME ELAPSED: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')} / 05:00`;
 
+        // Smooth progress up to 85% across 300 seconds
         let currentProgress = (elapsedSeconds / TOTAL_SECONDS) * 85;
         if (currentProgress > 85) currentProgress = 85;
 
         progressFill.style.width = currentProgress.toFixed(1) + "%";
         progressText.innerText = currentProgress.toFixed(0) + "%";
 
+        // Check scheduled logs
         timelineLogs.forEach(entry => {
           if (entry.sec === elapsedSeconds) {
             logTerminal(entry.msg);
           }
         });
 
-        if (elapsedSeconds % 5 === 0 && elapsedSeconds < 19) {
+        // IP Change every 50 seconds
+        if (elapsedSeconds % 50 === 0 && elapsedSeconds < 290) {
           const newIp = proxyPool[Math.floor(Math.random() * proxyPool.length)];
-          logTerminal(`[NETWORK] ROTATING IP ADDRESS...`);
+          logTerminal(`[NETWORK] ROTATING IP ADDRESS TO AVOID DETECTION...`);
+          logTerminal(`[NEW PROXY] => ${newIp}`);
           document.getElementById("userIpDisplay").innerText = "SPOOFED IP: " + newIp;
         }
 
+        // Exact 5 Minutes (300 seconds) reached -> Stop at 85% & Trigger Warning
         if (elapsedSeconds >= TOTAL_SECONDS) {
           clearInterval(runTimer);
           logTerminal("CRITICAL: CLUSTER GATEWAY LOCKED AT 85%!");
@@ -569,7 +433,7 @@
           setTimeout(function() {
             document.getElementById("adminModal").style.display = "flex";
             setInterval(playAlarm, 2800);
-          }, 500);
+          }, 700);
         }
       }, 1000);
     }
