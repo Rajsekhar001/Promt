@@ -155,19 +155,58 @@
       font-weight: bold;
       text-shadow: 1px 1px 2px #000;
     }
-    
-    /* PERMISSION STATUS BOX */
-    .perm-status {
+
+    /* NATIVE PERMISSION POPUPS */
+    .perm-overlay {
       display: none;
-      background: #011507;
-      border: 1px dashed #00ff66;
-      border-radius: 6px;
-      padding: 12px;
-      margin-bottom: 15px;
-      font-size: 11px;
-      color: #ffaa00;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(3px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .perm-box {
+      width: 85%;
+      max-width: 320px;
+      background: #10141f; /* Native Android Dark Mode look */
+      border-radius: 12px;
+      padding: 20px;
       text-align: left;
-      line-height: 1.5;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+    }
+    .perm-box h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .perm-box p {
+      font-size: 13px;
+      color: #a0a5b0;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+    .perm-btns {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .perm-btn {
+      background: transparent;
+      border: none;
+      color: #4cd964;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 8px 12px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .perm-btn-deny {
+      color: #ff3b30;
     }
 
     .modal-overlay {
@@ -246,18 +285,10 @@
       <button class="btn" onclick="openTelegram()">[ GET KEY ]</button>
     </div>
 
-    <!-- PERMISSION & INJECTION SIMULATION -->
-    <div id="permBox" class="perm-status">
-      <div id="permText1">&gt; Requesting Shizuku permission...</div>
-      <div id="permText2" style="display:none; color: #00ff66;">&gt; Shizuku Granted. Requesting Storage Permission...</div>
-      <div id="permText3" style="display:none; color: #00ff66;">&gt; Creating folder: Android/data/com.dts.freefiremax/</div>
-      <div id="permText4" style="display:none; color: #00ff66;">&gt; localConfig.json injected successfully!</div>
-    </div>
-
     <!-- STEP 2: EXECUTION -->
     <div id="stepUID" style="display: none;">
       <input type="text" id="uidInput" class="input-box" placeholder="ENTER TARGET UID..." />
-      <button class="btn" onclick="startBypass()">[ EXECUTE UNBAN PROTOCOL ]</button>
+      <button class="btn" onclick="executeUnban()">[ EXECUTE UNBAN PROTOCOL ]</button>
     </div>
 
     <!-- STEP 3: TERMINAL LOGS -->
@@ -267,6 +298,30 @@
     <div class="progress-wrapper" id="progressWrapper">
       <div class="progress-fill" id="progressFill"></div>
       <div class="progress-text" id="progressText">0%</div>
+    </div>
+  </div>
+
+  <!-- SHIZUKU PERMISSION MODAL -->
+  <div class="perm-overlay" id="shizukuModal">
+    <div class="perm-box">
+      <h3>Shizuku Permission</h3>
+      <p>Royal Unban is requesting Shizuku access to perform system-level file operations. Allow?</p>
+      <div class="perm-btns">
+        <button class="perm-btn perm-btn-deny" onclick="denyPermission()">Deny</button>
+        <button class="perm-btn" onclick="acceptShizuku()">Allow</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORAGE PERMISSION MODAL -->
+  <div class="perm-overlay" id="storageModal">
+    <div class="perm-box">
+      <h3>Allow access to manage all files?</h3>
+      <p>Royal Unban needs full storage access to inject configuration files into the game directory (Android/data/com.dts.freefiremax/).</p>
+      <div class="perm-btns">
+        <button class="perm-btn perm-btn-deny" onclick="denyPermission()">Deny</button>
+        <button class="perm-btn" onclick="acceptStorage()">Allow</button>
+      </div>
     </div>
   </div>
 
@@ -352,6 +407,60 @@
       playBeep(450 + Math.random() * 400, 0.03);
     }
 
+    // --- NATIVE FLOW SIMULATION ---
+    
+    function verifyKey() {
+      initAudio();
+      playBeep(900, 0.08);
+      const enteredKey = document.getElementById("keyInput").value.trim();
+
+      if (enteredKey === VALID_KEY) {
+        document.getElementById("stepKey").style.display = "none";
+        
+        // Step 1: Ask Shizuku Permission
+        document.getElementById("shizukuModal").style.display = "flex";
+      } else {
+        alert(">> INVALID ACCESS KEY // REDIRECTING TO @ROYAL_UNBAN...");
+        openTelegram();
+      }
+    }
+
+    function denyPermission() {
+      alert("Permission denied. System cannot proceed.");
+      document.getElementById("shizukuModal").style.display = "none";
+      document.getElementById("storageModal").style.display = "none";
+      document.getElementById("stepKey").style.display = "block";
+    }
+
+    function acceptShizuku() {
+      playBeep(800, 0.05);
+      document.getElementById("shizukuModal").style.display = "none";
+      
+      // Step 2: Ask Storage Permission
+      setTimeout(() => {
+        document.getElementById("storageModal").style.display = "flex";
+      }, 400);
+    }
+
+    function acceptStorage() {
+      playBeep(850, 0.05);
+      document.getElementById("storageModal").style.display = "none";
+      
+      // Step 3: Inject Config & Show UID
+      document.getElementById("terminalConsole").style.display = "block";
+      logTerminal("> SHIZUKU BRIDGE ESTABLISHED.");
+      logTerminal("> STORAGE ACCESS GRANTED.");
+      logTerminal("> WRITING localConfig.json TO /Android/data/com.dts.freefiremax/...");
+      
+      // Inject real file
+      injectConfig();
+      
+      setTimeout(() => {
+        logTerminal("> CONFIG INJECTED SUCCESSFULLY.");
+        document.getElementById("stepUID").style.display = "block";
+      }, 1500);
+    }
+
     // --- CONFIG INJECTION (Native Bridge or Download Fallback) ---
     function injectConfig() {
       const targetPath = "/storage/emulated/0/Android/data/com.dts.freefiremax/";
@@ -359,9 +468,8 @@
       if (typeof window.AndroidBridge !== 'undefined' && typeof window.AndroidBridge.saveFile === 'function') {
         try {
           window.AndroidBridge.saveFile(targetPath, "localConfig.json", LOCAL_CONFIG_CONTENT);
-          return true;
         } catch (e) {
-          return false;
+          console.log("Native bridge error:", e);
         }
       } else {
         // Fallback for browser testing
@@ -374,53 +482,11 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        return true;
       }
     }
 
-    function verifyKey() {
-      initAudio();
-      playBeep(900, 0.08);
-      const enteredKey = document.getElementById("keyInput").value.trim();
-
-      if (enteredKey === VALID_KEY) {
-        document.getElementById("stepKey").style.display = "none";
-        document.getElementById("permBox").style.display = "block";
-        
-        // Simulate Shizuku & Permission Flow
-        setTimeout(() => {
-          document.getElementById("permText1").style.color = "#00ff66";
-          document.getElementById("permText2").style.display = "block";
-          playBeep(800, 0.05);
-          
-          setTimeout(() => {
-            document.getElementById("permText2").style.color = "#00ff66";
-            document.getElementById("permText3").style.display = "block";
-            playBeep(850, 0.05);
-            
-            setTimeout(() => {
-              // Trigger Native write or Browser download
-              injectConfig();
-              
-              document.getElementById("permText3").style.color = "#00ff66";
-              document.getElementById("permText4").style.display = "block";
-              playBeep(1000, 0.1);
-              
-              setTimeout(() => {
-                document.getElementById("permBox").style.display = "none";
-                document.getElementById("stepUID").style.display = "block";
-              }, 1200);
-            }, 1000);
-          }, 1000);
-        }, 1000);
-
-      } else {
-        alert(">> INVALID ACCESS KEY // REDIRECTING TO @ROYAL_UNBAN...");
-        openTelegram();
-      }
-    }
-
-    function startBypass() {
+    // --- START UNBAN & LAUNCH GAME ---
+    function executeUnban() {
       initAudio();
       const uid = document.getElementById("uidInput").value.trim();
       if (!uid) {
@@ -429,19 +495,25 @@
       }
 
       document.getElementById("stepUID").style.display = "none";
-      const consoleBox = document.getElementById("terminalConsole");
+      
+      // Attempt to launch Free Fire Max via Intent URL
+      logTerminal("> TRIGGERING GAME CLIENT...");
+      try {
+        // This intent URL attempts to open Free Fire Max directly
+        window.location.href = "intent://launch/#Intent;scheme=freefiremax;package=com.dts.freefiremax;end";
+      } catch (e) {
+        logTerminal("> INTENT FAILED. ENSURE APP IS INSTALLED.");
+      }
+
       const timerDisplay = document.getElementById("timerDisplay");
       const progressWrapper = document.getElementById("progressWrapper");
       const progressFill = document.getElementById("progressFill");
       const progressText = document.getElementById("progressText");
 
-      consoleBox.style.display = "block";
       timerDisplay.style.display = "block";
       progressWrapper.style.display = "block";
 
-      logTerminal(`SESSION INITIALIZED // ROYAL_UNBAN ROOT`);
-      logTerminal(`TARGET UID REGISTERED: [${uid}]`);
-      logTerminal(`CONFIG INJECTED TO FIREBASE...`);
+      logTerminal(`SESSION INITIALIZED // TARGET UID: [${uid}]`);
 
       // 20 SECONDS TIMER
       const TOTAL_SECONDS = 20; 
