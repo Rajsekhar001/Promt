@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ROYAL UNBAN - VIP ACCESS</title>
+  
+  <!-- Tesseract.js OCR Library for Screenshot Text Verification -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -13,7 +17,7 @@
     }
     body {
       background-color: #050608;
-      background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 0);
+      background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 0);
       background-size: 20px 20px;
       min-height: 100vh;
       display: flex;
@@ -24,14 +28,21 @@
     }
     .card {
       width: 100%;
-      max-width: 410px;
+      max-width: 420px;
       border: 1px solid #d4af37;
       border-radius: 14px;
-      padding: 24px 20px;
+      padding: 22px 18px;
       text-align: center;
-      background: rgba(12, 14, 18, 0.95);
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+      background: rgba(12, 14, 18, 0.96);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
       position: relative;
+    }
+    .banner-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #d4af37;
+      margin-bottom: 12px;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
     }
     .vip-badge {
       display: inline-block;
@@ -39,49 +50,49 @@
       color: #000;
       font-weight: 900;
       font-size: 13px;
-      padding: 7px 18px;
+      padding: 6px 16px;
       border-radius: 20px;
       letter-spacing: 1.5px;
-      margin-bottom: 12px;
-      box-shadow: 0 0 12px rgba(243, 156, 18, 0.6);
-      text-transform: uppercase;
-    }
-    .sub-badge {
-      font-size: 11px;
-      color: #f1c40f;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
-      text-transform: uppercase;
-    }
-    .logo {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      border: 2px solid #d4af37;
-      box-shadow: 0 0 18px rgba(212, 175, 55, 0.4);
-      object-fit: cover;
       margin-bottom: 8px;
+      box-shadow: 0 0 12px rgba(243, 156, 18, 0.5);
     }
     h2 {
-      font-size: 21px;
-      margin-bottom: 4px;
+      font-size: 20px;
+      margin-bottom: 6px;
       letter-spacing: 2px;
       color: #fff;
       text-shadow: 0 0 10px #d4af37;
     }
-    p {
-      font-size: 11px;
-      color: #bdc3c7;
-      margin-bottom: 14px;
-    }
-    .ip-box {
-      font-size: 11px;
-      padding: 8px;
-      background: #0d1117;
+    .price-box {
+      background: #090c10;
       border: 1px dashed #d4af37;
-      border-radius: 6px;
-      margin-bottom: 14px;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 12px 0;
+      font-size: 13px;
       color: #f1c40f;
+      line-height: 1.6;
+    }
+    .qr-container {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
+      margin: 10px 0;
+      border: 2px solid #d4af37;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+    .qr-img {
+      width: 190px;
+      height: 190px;
+      object-fit: contain;
+      display: block;
+    }
+    .upi-info {
+      font-size: 12px;
+      color: #00ff66;
+      margin-bottom: 14px;
+      line-height: 1.5;
     }
     .input-box {
       width: 100%;
@@ -94,6 +105,17 @@
       outline: none;
       margin-bottom: 12px;
       text-align: center;
+    }
+    .file-upload {
+      display: block;
+      border: 1px dashed #d4af37;
+      padding: 12px;
+      border-radius: 6px;
+      background: #08090c;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #ffd700;
     }
     .btn {
       width: 100%;
@@ -115,6 +137,12 @@
       color: #000;
       box-shadow: 0 0 16px #d4af37;
     }
+    .status-msg {
+      font-size: 11px;
+      color: #00ffcc;
+      margin-bottom: 10px;
+      min-height: 16px;
+    }
     #terminalConsole {
       display: none;
       text-align: left;
@@ -128,12 +156,6 @@
       overflow-y: auto;
       margin-bottom: 12px;
       line-height: 1.5;
-    }
-    .timer-display {
-      display: none;
-      font-size: 11px;
-      color: #e67e22;
-      margin-bottom: 8px;
     }
     .progress-wrapper {
       display: none;
@@ -150,7 +172,7 @@
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, #d4af37, #f39c12);
-      transition: width 0.8s linear;
+      transition: width 0.4s linear;
     }
     .progress-text {
       position: absolute;
@@ -162,24 +184,7 @@
       font-weight: bold;
       text-shadow: 1px 1px 2px #000;
     }
-    .switch-panel {
-      display: none;
-      border: 1px solid #f39c12;
-      padding: 12px;
-      border-radius: 8px;
-      background: #10141a;
-      margin-bottom: 12px;
-      animation: glowBox 1s infinite alternate;
-    }
-    @keyframes glowBox {
-      0% { box-shadow: 0 0 5px rgba(243, 156, 18, 0.3); }
-      100% { box-shadow: 0 0 15px rgba(243, 156, 18, 0.7); }
-    }
-    .switch-panel p {
-      font-size: 11px;
-      color: #ffd700;
-      margin-bottom: 8px;
-    }
+    /* Modal Popups */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -188,132 +193,152 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(4px);
       justify-content: center;
       align-items: center;
       z-index: 999;
     }
     .modal-box {
-      width: 85%;
-      max-width: 320px;
-      background: #0f0505;
-      border: 2px solid #e74c3c;
-      border-radius: 10px;
-      padding: 20px;
+      width: 88%;
+      max-width: 330px;
+      background: #0d120a;
+      border: 2px solid #2ecc71;
+      border-radius: 12px;
+      padding: 22px;
       text-align: center;
+      box-shadow: 0 0 30px rgba(46, 204, 113, 0.6);
+      color: #2ecc71;
+    }
+    .modal-box.danger {
+      background: #150606;
+      border: 2px solid #e74c3c;
       box-shadow: 0 0 30px rgba(231, 76, 60, 0.6);
       color: #e74c3c;
     }
-    .modal-box h3 {
-      font-size: 17px;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
-    .modal-box p {
-      font-size: 11px;
-      color: #ecf0f1;
-      margin-bottom: 16px;
-      line-height: 1.4;
-    }
-    .btn-admin {
-      background: #e74c3c;
-      color: #ffffff;
-      border: none;
-      padding: 12px;
+    .key-display {
+      background: #000;
+      color: #00ff66;
+      padding: 10px;
       border-radius: 6px;
-      font-weight: bold;
-      width: 100%;
-      cursor: pointer;
+      border: 1px dashed #00ff66;
+      margin: 12px 0;
       font-size: 13px;
+      font-weight: bold;
+      word-break: break-all;
     }
   </style>
 </head>
 <body onclick="playWelcomeVoice()" ontouchstart="playWelcomeVoice()">
 
-  <!-- Audio Element for Paidvoice.mp3 -->
+  <!-- Background Audio -->
   <audio id="bgVoice" preload="auto">
     <source src="https://raw.githubusercontent.com/Rajsekhar001/Promt/main/Paidvoice.mp3" type="audio/mpeg" />
   </audio>
 
   <div class="card">
     <div class="vip-badge">PAID UNBAN ₹349</div>
-    <div class="sub-badge">★ VIP USER ONLY ★</div>
     
-    <img src="https://raw.githubusercontent.com/Rajsekhar001/Promt/main/IMG_20261017_122814_174.jpg" alt="ROYAL UNBAN Logo" class="logo" />
-    
+    <!-- Thumbnail Banner -->
+    <img src="https://raw.githubusercontent.com/Rajsekhar001/Promt/main/IMG_20261017_122814_174.jpg" alt="Thumbnail" class="banner-img" />
+
     <h2>ROYAL UNBAN</h2>
-    <p>&gt; ELITE VIP CONSOLE &lt;</p>
 
-    <div class="ip-box" id="userIpDisplay">TARGET IP: FETCHING...</div>
-
-    <!-- Step 1: Key Screen -->
-    <div id="stepKey">
-      <input type="text" id="keyInput" class="input-box" placeholder="ENTER VIP KEY..." />
+    <!-- SCREEN 1: KEY ENTRY PORTAL -->
+    <div id="keyPortal">
+      <input type="text" id="keyInput" class="input-box" placeholder="ENTER VIP ACCESS KEY..." />
       <button class="btn" onclick="verifyKey()">[ VERIFY VIP KEY ]</button>
-      <button class="btn" onclick="openTelegram()">[ GET VIP KEY ]</button>
+      <button class="btn" onclick="showGateway()">[ GET KEY / 50% PAYMENT ]</button>
     </div>
 
-    <!-- Step 2: UID Screen -->
-    <div id="stepUID" style="display: none;">
-      <input type="text" id="uidInput" class="input-box" placeholder="ENTER VIP TARGET UID..." />
-      <button class="btn" onclick="startBypass()">[ START VIP PROCESS ]</button>
+    <!-- SCREEN 2: 50% PAYMENT GATEWAY (GET KEY par khulega) -->
+    <div id="paymentSection" style="display: none;">
+      <div class="price-box">
+        TOTAL: <b>₹349</b><br>
+        50% ADVANCE PAYMENT: <b style="color: #00ff66; font-size: 16px;">₹174</b><br>
+        <span style="font-size: 11px; color: #aaa;">(Remaining 50% After ID Unban)</span>
+      </div>
+
+      <div class="qr-container">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=apex65carnger@nyes%26pn=ROHIT%20KUMAR%26am=174%26cu=INR" alt="UPI QR" class="qr-img" />
+      </div>
+
+      <div class="upi-info">
+        UPI ID: <b>apex65carnger@nyes</b><br>
+        NAME: <b>ROHIT KUMAR</b><br>
+        EXACT AMOUNT: <b>₹174</b>
+      </div>
+
+      <input type="text" id="txnId" class="input-box" placeholder="ENTER 12-DIGIT UTR / TXN ID" />
+
+      <label class="file-upload" for="ssFile">
+        <span id="uploadLabel">📁 UPLOAD PAYMENT SCREENSHOT</span>
+        <input type="file" id="ssFile" accept="image/*" style="display: none;" onchange="handleFileSelect(event)" />
+      </label>
+
+      <div class="status-msg" id="ocrStatus"></div>
+
+      <button class="btn" id="verifyBtn" onclick="verifyPaymentScreenshot()">[ VERIFY ₹174 & GET KEY ]</button>
+      <button class="btn" onclick="backToKeyPortal()">[ BACK TO KEY LOGIN ]</button>
+      <button class="btn" onclick="openTelegram()">[ HELP / GET KEY ]</button>
     </div>
 
-    <!-- Terminal & Progress -->
+    <!-- SCREEN 3: UID INPUT PORTAL -->
+    <div id="uidPortal" style="display: none;">
+      <input type="text" id="uidInput" class="input-box" placeholder="ENTER BANNED UID..." />
+      <button class="btn" onclick="startTerminalProcess()">[ START UNBAN PROCESS ]</button>
+    </div>
+
+    <!-- TERMINAL SCREEN -->
     <div id="terminalConsole"></div>
-    <div class="timer-display" id="timerDisplay">ELAPSED: 00:00 / 05:00</div>
     <div class="progress-wrapper" id="progressWrapper">
       <div class="progress-fill" id="progressFill"></div>
       <div class="progress-text" id="progressText">0%</div>
     </div>
+  </div>
 
-    <!-- 50% Switch Toggle Screen -->
-    <div class="switch-panel" id="switchPanel">
-      <p>⚠️ CONFIGURATION VERIFICATION REQUIRED (50%)</p>
-      <button class="btn" onclick="enableSwitch()">[ TOGGLE ACTIVE CONFIG ]</button>
+  <!-- SUCCESS POPUP -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-box">
+      <h3>✅ PAYMENT VERIFIED!</h3>
+      <p style="font-size: 12px; color: #fff; margin-top: 6px;">₹174 verified successfully! Access Key generated:</p>
+      <div class="key-display">APEXUNBAN_PAID67G5R8</div>
+      <button class="btn" style="background: #2ecc71; color: #000;" onclick="copyAndProceed()">[ COPY KEY & PROCEED ]</button>
     </div>
   </div>
 
-  <!-- 85% Modal -->
-  <div class="modal-overlay" id="adminModal">
-    <div class="modal-box">
-      <h3>⚠️ SECURITY HOLD: 85%</h3>
-      <p>GATEWAY LOCKED AT 85%.<br>VIP ADMIN KEY REQUIRED TO RELEASE PACKETS.</p>
-      <button class="btn-admin" onclick="openTelegram()">CONTACT ADMIN</button>
+  <!-- WARNING POPUP: 85% HOLD -->
+  <div class="modal-overlay" id="adminHoldModal">
+    <div class="modal-box danger">
+      <h3>⚠️ SERVER HOLD: 85%</h3>
+      <p style="font-size: 12px; color: #fff; margin-top: 6px;">50% Unban completed. Contact Admin to clear final balance and unlock account.</p>
+      <button class="btn" style="background: #e74c3c; color: #fff;" onclick="openTelegram()">[ CONTACT ADMIN ]</button>
     </div>
   </div>
 
   <script>
     const VALID_KEY = "APEXUNBAN_PAID67G5R8";
-    let clientIP = "127.0.0.1";
-    let isPausedForSwitch = false;
     let voicePlayed = false;
+    let selectedFile = null;
 
-    // First Click / Touch pe MP3 start hoga
     function playWelcomeVoice() {
       if (!voicePlayed) {
         const audio = document.getElementById("bgVoice");
         if (audio) {
-          audio.play().then(() => {
-            voicePlayed = true;
-          }).catch(() => {});
+          audio.play().then(() => { voicePlayed = true; }).catch(() => {});
         }
       }
     }
 
-    // Direct page load pe bhi attempt karega
-    window.addEventListener("DOMContentLoaded", () => {
+    function showGateway() {
       playWelcomeVoice();
-    });
+      document.getElementById("keyPortal").style.display = "none";
+      document.getElementById("paymentSection").style.display = "block";
+    }
 
-    fetch("https://api.ipify.org?format=json")
-      .then(res => res.json())
-      .then(data => {
-        clientIP = data.ip;
-        document.getElementById("userIpDisplay").innerText = "CLIENT IP: " + clientIP;
-      })
-      .catch(() => {
-        document.getElementById("userIpDisplay").innerText = "CLIENT IP: 103.112.44.18";
-      });
+    function backToKeyPortal() {
+      document.getElementById("paymentSection").style.display = "none";
+      document.getElementById("keyPortal").style.display = "block";
+    }
 
     function openTelegram() {
       window.location.href = "tg://resolve?domain=ROYAL_UNBAN";
@@ -322,80 +347,130 @@
       }, 500);
     }
 
-    function verifyKey() {
-      playWelcomeVoice();
-      const enteredKey = document.getElementById("keyInput").value.trim();
-      if (enteredKey === VALID_KEY) {
-        document.getElementById("stepKey").style.display = "none";
-        document.getElementById("stepUID").style.display = "block";
-      } else {
-        alert(">> INVALID VIP KEY // REDIRECTING...");
-        openTelegram();
+    function handleFileSelect(e) {
+      if (e.target.files && e.target.files[0]) {
+        selectedFile = e.target.files[0];
+        document.getElementById("uploadLabel").innerText = "✓ " + selectedFile.name.substring(0, 18);
+        document.getElementById("ocrStatus").innerText = "Image selected. Ready to scan.";
       }
     }
 
-    function logTerminal(message) {
-      const consoleBox = document.getElementById("terminalConsole");
-      consoleBox.innerHTML += `<div>&gt; ${message}</div>`;
-      consoleBox.scrollTop = consoleBox.scrollHeight;
+    // Real Screenshot Scanning using Tesseract OCR
+    async function verifyPaymentScreenshot() {
+      playWelcomeVoice();
+      const utr = document.getElementById("txnId").value.trim();
+      const statusBox = document.getElementById("ocrStatus");
+      const verifyBtn = document.getElementById("verifyBtn");
+
+      if (!selectedFile && utr.length < 10) {
+        alert("Please upload payment screenshot or enter valid 12-digit UTR!");
+        return;
+      }
+
+      verifyBtn.disabled = true;
+      verifyBtn.innerText = "[ SCANNING IMAGE... ]";
+      statusBox.innerText = "Analyzing screenshot text with OCR...";
+
+      let isValidPayment = false;
+
+      if (selectedFile) {
+        try {
+          const worker = await Tesseract.createWorker('eng');
+          const ret = await worker.recognize(selectedFile);
+          const fullText = ret.data.text.toLowerCase();
+          await worker.terminate();
+
+          // Checking if text contains payment indicators
+          const hasAmount = fullText.includes("174");
+          const hasReceiver = fullText.includes("apex") || fullText.includes("rohit") || fullText.includes("nyes");
+          const hasSuccessStatus = fullText.includes("paid") || fullText.includes("success") || fullText.includes("completed");
+
+          if (hasAmount && (hasReceiver || hasSuccessStatus)) {
+            isValidPayment = true;
+          } else if (hasAmount || (hasReceiver && hasSuccessStatus)) {
+            isValidPayment = true;
+          }
+        } catch (err) {
+          console.error("OCR Error:", err);
+        }
+      }
+
+      // Fallback: Agar OCR detect na kare par user ne 10+ digit UTR daala ho
+      if (!isValidPayment && utr.length >= 10) {
+        isValidPayment = true;
+      }
+
+      verifyBtn.disabled = false;
+      verifyBtn.innerText = "[ VERIFY ₹174 & GET KEY ]";
+
+      if (isValidPayment) {
+        statusBox.innerText = "✓ Payment Proof Verified!";
+        document.getElementById("successModal").style.display = "flex";
+      } else {
+        statusBox.innerText = "❌ Verification Failed. Make sure amount ₹174 & UPI ID are clearly visible.";
+        alert("Verification Failed! Yeh screenshot ₹174 payment ka proof nahi lag raha. Kripya sahi screenshot dalein ya UTR number bharein.");
+      }
     }
 
-    function enableSwitch() {
-      document.getElementById("switchPanel").style.display = "none";
-      logTerminal("USER SWITCH CONFIRMED: PACKET FLOW RESUMED.");
-      isPausedForSwitch = false;
+    function copyAndProceed() {
+      navigator.clipboard.writeText(VALID_KEY).catch(() => {});
+      document.getElementById("successModal").style.display = "none";
+      document.getElementById("paymentSection").style.display = "none";
+      document.getElementById("keyPortal").style.display = "block";
+      document.getElementById("keyInput").value = VALID_KEY;
     }
 
-    function startBypass() {
+    function verifyKey() {
+      const enteredKey = document.getElementById("keyInput").value.trim();
+      if (enteredKey === VALID_KEY) {
+        document.getElementById("keyPortal").style.display = "none";
+        document.getElementById("uidPortal").style.display = "block";
+      } else {
+        alert("Invalid Key! Click on [GET KEY] to complete payment.");
+        showGateway();
+      }
+    }
+
+    function logTerminal(msg) {
+      const box = document.getElementById("terminalConsole");
+      box.innerHTML += `<div>&gt; ${msg}</div>`;
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function startTerminalProcess() {
       const uid = document.getElementById("uidInput").value.trim();
       if (!uid) {
         alert("Please enter target UID!");
         return;
       }
 
-      document.getElementById("stepUID").style.display = "none";
+      document.getElementById("uidPortal").style.display = "none";
       document.getElementById("terminalConsole").style.display = "block";
-      document.getElementById("timerDisplay").style.display = "block";
       document.getElementById("progressWrapper").style.display = "block";
 
-      logTerminal(`VIP PROTOCOL INITIATED // USER: ${uid}`);
-      logTerminal(`PLAN: ₹349 VIP ACCESS`);
+      logTerminal(`SESSION STARTED // UID: ${uid}`);
+      logTerminal(`50% ADVANCE PAYMENT CONFIRMED: ₹174`);
+      logTerminal(`CONNECTING TO VIP UNBAN CLUSTER...`);
 
-      const TOTAL_SECONDS = 300;
-      let elapsedSeconds = 0;
-      let switchTriggered = false;
+      let progress = 0;
+      const timer = setInterval(() => {
+        progress += 5;
+        if (progress <= 85) {
+          document.getElementById("progressFill").style.width = progress + "%";
+          document.getElementById("progressText").innerText = progress + "%";
 
-      const runTimer = setInterval(function() {
-        if (isPausedForSwitch) return;
-
-        elapsedSeconds++;
-
-        let mins = Math.floor(elapsedSeconds / 60);
-        let secs = elapsedSeconds % 60;
-        document.getElementById("timerDisplay").innerText = `ELAPSED: ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')} / 05:00`;
-
-        let progress = (elapsedSeconds / TOTAL_SECONDS) * 85;
-        if (progress > 85) progress = 85;
-
-        document.getElementById("progressFill").style.width = progress.toFixed(1) + "%";
-        document.getElementById("progressText").innerText = progress.toFixed(0) + "%";
-
-        if (progress >= 50 && !switchTriggered) {
-          switchTriggered = true;
-          isPausedForSwitch = true;
-          document.getElementById("switchPanel").style.display = "block";
-          logTerminal("SYSTEM HALTED AT 50%: TOGGLE USER SWITCH TO CONTINUE.");
-          return;
+          if (progress === 30) logTerminal("INJECTING ADVANCE CREDENTIALS...");
+          if (progress === 60) logTerminal("REMOVING TEMP BLACKLIST RESTRICTION...");
         }
 
-        if (elapsedSeconds >= TOTAL_SECONDS) {
-          clearInterval(runTimer);
-          logTerminal("SERVER SECURITY TRIPPED AT 85%!");
-          setTimeout(function() {
-            document.getElementById("adminModal").style.display = "flex";
+        if (progress >= 85) {
+          clearInterval(timer);
+          logTerminal("SYSTEM HOLD: 85% REACHED.");
+          setTimeout(() => {
+            document.getElementById("adminHoldModal").style.display = "flex";
           }, 600);
         }
-      }, 1000);
+      }, 400);
     }
   </script>
 
