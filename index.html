@@ -1,476 +1,797 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ROYAL UNBAN - VIP ACCESS</title>
-  
-  <!-- Tesseract.js OCR Library for Screenshot Text Verification -->
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <title>HONEY PORTAL | ELITE GAMING STORE & UNBAN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;700&family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --cyber-bg: #060913;
+      --card-bg: rgba(11, 16, 28, 0.96);
+      --neon-cyan: #00f3ff;
+      --neon-green: #00ff66;
+      --neon-yellow: #ffe600;
+      --neon-red: #ff0055;
+      --border-cyan: rgba(0, 243, 255, 0.35);
+      --text-muted: #8fa2bd;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Courier New', Courier, monospace;
     }
+
     body {
-      background-color: #050608;
-      background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 0);
-      background-size: 20px 20px;
+      background-color: var(--cyber-bg);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(255, 0, 85, 0.1) 0%, transparent 50%),
+        linear-gradient(to bottom, #090e1a, #030509);
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      color: #ffd700;
-      padding: 15px;
-    }
-    .card {
-      width: 100%;
-      max-width: 420px;
-      border: 1px solid #d4af37;
-      border-radius: 14px;
-      padding: 22px 18px;
-      text-align: center;
-      background: rgba(12, 14, 18, 0.96);
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-      position: relative;
-    }
-    .banner-img {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid #d4af37;
-      margin-bottom: 12px;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
-    }
-    .vip-badge {
-      display: inline-block;
-      background: linear-gradient(90deg, #d4af37, #f39c12);
-      color: #000;
-      font-weight: 900;
-      font-size: 13px;
-      padding: 6px 16px;
-      border-radius: 20px;
-      letter-spacing: 1.5px;
-      margin-bottom: 8px;
-      box-shadow: 0 0 12px rgba(243, 156, 18, 0.5);
-    }
-    h2 {
-      font-size: 20px;
-      margin-bottom: 6px;
-      letter-spacing: 2px;
+      align-items: flex-start;
       color: #fff;
-      text-shadow: 0 0 10px #d4af37;
+      font-family: 'Rajdhani', sans-serif;
+      padding: 18px 10px;
     }
-    .price-box {
-      background: #090c10;
-      border: 1px dashed #d4af37;
-      border-radius: 8px;
-      padding: 12px;
-      margin: 12px 0;
-      font-size: 13px;
-      color: #f1c40f;
-      line-height: 1.6;
-    }
-    .qr-container {
-      background: #ffffff;
-      padding: 10px;
-      border-radius: 10px;
-      display: inline-block;
-      margin: 10px 0;
-      border: 2px solid #d4af37;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-    }
-    .qr-img {
-      width: 190px;
-      height: 190px;
-      object-fit: contain;
-      display: block;
-    }
-    .upi-info {
-      font-size: 12px;
-      color: #00ff66;
-      margin-bottom: 14px;
-      line-height: 1.5;
-    }
-    .input-box {
+
+    .cyber-container {
       width: 100%;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #d4af37;
-      background: #08090c;
-      color: #ffd700;
-      font-size: 13px;
-      outline: none;
-      margin-bottom: 12px;
+      max-width: 440px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-cyan);
+      border-radius: 20px;
+      padding: 20px 14px;
+      box-shadow: 0 0 35px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(0, 0, 0, 0.85);
+    }
+
+    /* Top Brand Header */
+    .brand-header {
       text-align: center;
+      margin-bottom: 16px;
     }
-    .file-upload {
-      display: block;
-      border: 1px dashed #d4af37;
-      padding: 12px;
-      border-radius: 6px;
-      background: #08090c;
-      margin-bottom: 12px;
-      cursor: pointer;
-      font-size: 12px;
-      color: #ffd700;
-    }
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #d4af37;
-      font-size: 13px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-bottom: 10px;
-      background: transparent;
-      color: #ffd700;
+
+    .brand-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+    }
+
+    .brand-title span {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    /* Tabs */
+    .tab-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+      padding: 12px 6px;
+      border-radius: 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(255, 0, 85, 0.2), rgba(0, 243, 255, 0.25));
+      border-color: var(--neon-cyan);
+      color: #fff;
+      box-shadow: 0 0 16px rgba(0, 243, 255, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Image Gallery Slider */
+    .badge-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .cyber-badge {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: var(--neon-yellow);
+      background: rgba(255, 230, 0, 0.12);
+      border: 1px solid var(--neon-yellow);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 700;
       letter-spacing: 1px;
-      transition: 0.25s;
     }
-    .btn:hover, .btn:active {
-      background: #d4af37;
-      color: #000;
-      box-shadow: 0 0 16px #d4af37;
+
+    .slider-card {
+      background: #020409;
+      border: 1px solid var(--border-cyan);
+      border-radius: 14px;
+      padding: 6px;
+      margin-bottom: 14px;
     }
-    .status-msg {
-      font-size: 11px;
-      color: #00ffcc;
-      margin-bottom: 10px;
-      min-height: 16px;
-    }
-    #terminalConsole {
-      display: none;
-      text-align: left;
-      font-size: 11px;
-      color: #f1c40f;
-      background: #050608;
-      border: 1px solid #7f8c8d;
-      padding: 10px;
-      border-radius: 6px;
-      height: 140px;
-      overflow-y: auto;
-      margin-bottom: 12px;
-      line-height: 1.5;
-    }
-    .progress-wrapper {
-      display: none;
+
+    .slider-viewport {
       width: 100%;
-      background: #111;
-      border: 1px solid #d4af37;
-      border-radius: 6px;
-      height: 20px;
+      height: 235px;
       position: relative;
-      margin-bottom: 10px;
+      background: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slider-viewport img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .slide-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 243, 255, 0.3);
+      border: 1px solid var(--neon-cyan);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 800;
+    }
+    .slide-arrow.left { left: 8px; }
+    .slide-arrow.right { right: 8px; }
+
+    .counter-tag {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid var(--border-cyan);
+      font-size: 11px;
+      font-family: 'Orbitron';
+      color: var(--neon-cyan);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .thumb-strip {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 8px 2px 2px 2px;
+    }
+
+    .thumb-node {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #000;
       overflow: hidden;
     }
-    .progress-fill {
+
+    .thumb-node.active-thumb {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    .thumb-node img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Price / Status Box */
+    .info-strip {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .info-row:not(:last-child) {
+      margin-bottom: 6px;
+    }
+
+    /* Promo Code Input */
+    .promo-wrap {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .cyber-input {
+      width: 100%;
+      background: #03060f;
+      border: 1px solid var(--border-cyan);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      outline: none;
+    }
+
+    .cyber-input:focus {
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px rgba(0, 255, 102, 0.35);
+    }
+
+    .apply-btn {
+      background: var(--neon-yellow);
+      border: none;
+      color: #000;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 0 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* QR Code Display Block */
+    .qr-card {
+      background: #02050b;
+      border: 1px solid var(--neon-yellow);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 230, 0, 0.15);
+      margin-bottom: 14px;
+    }
+
+    .qr-img {
+      width: 200px;
+      height: 200px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 4px;
+      margin: 0 auto 10px auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .qr-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+    }
+
+    .qr-desc b {
+      color: var(--neon-cyan);
+    }
+
+    /* Buttons */
+    .cyber-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00f3ff, #0077ff);
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      color: #000;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      box-shadow: 0 0 16px rgba(0, 243, 255, 0.35);
+      margin-bottom: 8px;
+      transition: transform 0.1s ease;
+    }
+    .cyber-btn:active {
+      transform: scale(0.98);
+    }
+
+    .telegram-btn {
+      width: 100%;
+      background: #0088cc;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: transform 0.1s ease;
+    }
+    .telegram-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Terminal Window */
+    .terminal-box {
+      background: #020408;
+      border: 1px solid var(--neon-green);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 0 18px rgba(0, 255, 102, 0.2);
+      margin-bottom: 14px;
+    }
+
+    .terminal-header {
+      display: flex;
+      justify-content: space-between;
+      color: var(--neon-green);
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      border-bottom: 1px solid rgba(0, 255, 102, 0.25);
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+
+    .terminal-console {
+      height: 160px;
+      overflow-y: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: #00ffaa;
+      line-height: 1.5;
+    }
+
+    .terminal-progress {
+      width: 100%;
+      height: 12px;
+      background: #0a1420;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 10px;
+      border: 1px solid var(--border-cyan);
+    }
+
+    .terminal-bar {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #d4af37, #f39c12);
-      transition: width 0.4s linear;
-    }
-    .progress-text {
-      position: absolute;
-      width: 100%;
-      top: 2px;
-      left: 0;
-      font-size: 11px;
-      color: #ffffff;
-      font-weight: bold;
-      text-shadow: 1px 1px 2px #000;
-    }
-    /* Modal Popups */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(4px);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-    .modal-box {
-      width: 88%;
-      max-width: 330px;
-      background: #0d120a;
-      border: 2px solid #2ecc71;
-      border-radius: 12px;
-      padding: 22px;
-      text-align: center;
-      box-shadow: 0 0 30px rgba(46, 204, 113, 0.6);
-      color: #2ecc71;
-    }
-    .modal-box.danger {
-      background: #150606;
-      border: 2px solid #e74c3c;
-      box-shadow: 0 0 30px rgba(231, 76, 60, 0.6);
-      color: #e74c3c;
-    }
-    .key-display {
-      background: #000;
-      color: #00ff66;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px dashed #00ff66;
-      margin: 12px 0;
-      font-size: 13px;
-      font-weight: bold;
-      word-break: break-all;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+      transition: width 0.35s ease;
     }
   </style>
 </head>
-<body onclick="playWelcomeVoice()" ontouchstart="playWelcomeVoice()">
+<body>
 
-  <!-- Background Audio -->
-  <audio id="bgVoice" preload="auto">
-    <source src="https://raw.githubusercontent.com/Rajsekhar001/Promt/main/Paidvoice.mp3" type="audio/mpeg" />
-  </audio>
-
-  <div class="card">
-    <div class="vip-badge">PAID UNBAN ₹349</div>
+  <div class="cyber-container">
     
-    <!-- Thumbnail Banner -->
-    <img src="https://raw.githubusercontent.com/Rajsekhar001/Promt/main/IMG_20261017_122814_174.jpg" alt="Thumbnail" class="banner-img" />
-
-    <h2>ROYAL UNBAN</h2>
-
-    <!-- SCREEN 1: KEY ENTRY PORTAL -->
-    <div id="keyPortal">
-      <input type="text" id="keyInput" class="input-box" placeholder="ENTER VIP ACCESS KEY..." />
-      <button class="btn" onclick="verifyKey()">[ VERIFY VIP KEY ]</button>
-      <button class="btn" onclick="showGateway()">[ GET KEY / 50% PAYMENT ]</button>
+    <!-- Title -->
+    <div class="brand-header">
+      <div class="brand-title">HONEY PORTAL | <span>ELITE CYBER HUB</span></div>
     </div>
 
-    <!-- SCREEN 2: 50% PAYMENT GATEWAY (GET KEY par khulega) -->
-    <div id="paymentSection" style="display: none;">
-      <div class="price-box">
-        TOTAL: <b>₹349</b><br>
-        50% ADVANCE PAYMENT: <b style="color: #00ff66; font-size: 16px;">₹174</b><br>
-        <span style="font-size: 11px; color: #aaa;">(Remaining 50% After ID Unban)</span>
+    <!-- Navigation Tabs -->
+    <div class="tab-switch">
+      <button class="tab-btn active" onclick="soundFx.click(); showTab('store', this)">
+        🛒 BUY FF ID
+      </button>
+      <button class="tab-btn" onclick="soundFx.click(); showTab('unban', this)">
+        ⚡ HONEY UNBAN
+      </button>
+    </div>
+
+    <!-- TAB 1: BUY FF ID -->
+    <div id="tabStore" class="tab-content active">
+      
+      <div class="badge-bar">
+        <span class="cyber-badge">VERIFIED LEVEL-78 ACC</span>
       </div>
 
-      <div class="qr-container">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=apex65carnger@nyes%26pn=ROHIT%20KUMAR%26am=174%26cu=INR" alt="UPI QR" class="qr-img" />
+      <!-- Slider Container -->
+      <div class="slider-card">
+        <div class="slider-viewport">
+          <div class="slide-arrow left" onclick="soundFx.click(); stepSlide(-1)">⟨</div>
+          <img id="mainDisplayImg" src="https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/game_Screenshot_20261018-131654.jpg" alt="ID Screenshot" />
+          <div class="slide-arrow right" onclick="soundFx.click(); stepSlide(1)">⟩</div>
+          <div class="counter-tag"><span id="slideIndexText">1</span> / 17</div>
+        </div>
+
+        <div class="thumb-strip" id="thumbRail"></div>
       </div>
 
-      <div class="upi-info">
-        UPI ID: <b>apex65carnger@nyes</b><br>
-        NAME: <b>ROHIT KUMAR</b><br>
-        EXACT AMOUNT: <b>₹174</b>
+      <!-- Pricing Strip -->
+      <div class="info-strip">
+        <div class="info-row">
+          <span style="color: var(--text-muted);">EXCLUSIVE ACC PRICE</span>
+          <span style="text-decoration: line-through; color: #777;">₹2,500</span>
+        </div>
+        <div class="info-row">
+          <span style="color: var(--text-muted);">FINAL DEAL PRICE</span>
+          <span style="color: var(--neon-yellow); font-family: 'Orbitron'; font-size: 17px;" id="dealPriceText">₹2,500</span>
+        </div>
       </div>
 
-      <input type="text" id="txnId" class="input-box" placeholder="ENTER 12-DIGIT UTR / TXN ID" />
+      <!-- Promo Code -->
+      <div class="promo-wrap">
+        <input type="text" id="promoInput" class="cyber-input" placeholder="ENTER PROMO CODE (APEX1000)" onfocus="soundFx.click()" />
+        <button class="apply-btn" onclick="soundFx.click(); applyPromo()">APPLY</button>
+      </div>
 
-      <label class="file-upload" for="ssFile">
-        <span id="uploadLabel">📁 UPLOAD PAYMENT SCREENSHOT</span>
-        <input type="file" id="ssFile" accept="image/*" style="display: none;" onchange="handleFileSelect(event)" />
-      </label>
+      <!-- UPI QR Code for Store -->
+      <div class="qr-card">
+        <img class="qr-img" src="https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG_20261018_144914_721.jpg" id="storeQrImg" alt="UPI QR Code" />
+        <div class="qr-desc">
+          SCAN TO CLAIM ACCOUNT DIRECTLY<br>
+          UPI ID: <b>shukla0912@fam</b><br>
+          NAME: <b>Piyush Shukla</b><br>
+          PAYABLE: <b id="qrPayableAmount" style="color: var(--neon-yellow);">₹2,500</b>
+        </div>
+      </div>
 
-      <div class="status-msg" id="ocrStatus"></div>
+      <input type="text" id="utrStoreInput" class="cyber-input" placeholder="PASTE 12-DIGIT TRANSACTION / UTR ID" onfocus="soundFx.click()" />
+      <button class="cyber-btn" onclick="soundFx.click(); verifyStorePayment()">VERIFY PAYMENT & GET CREDENTIALS</button>
+      <button class="telegram-btn" onclick="soundFx.click(); openStoreTelegram()">CHAT WITH SELLER ON TELEGRAM</button>
 
-      <button class="btn" id="verifyBtn" onclick="verifyPaymentScreenshot()">[ VERIFY ₹174 & GET KEY ]</button>
-      <button class="btn" onclick="backToKeyPortal()">[ BACK TO KEY LOGIN ]</button>
-      <button class="btn" onclick="openTelegram()">[ HELP / GET KEY ]</button>
     </div>
 
-    <!-- SCREEN 3: UID INPUT PORTAL -->
-    <div id="uidPortal" style="display: none;">
-      <input type="text" id="uidInput" class="input-box" placeholder="ENTER BANNED UID..." />
-      <button class="btn" onclick="startTerminalProcess()">[ START UNBAN PROCESS ]</button>
+    <!-- TAB 2: HONEY UNBAN -->
+    <div id="tabUnban" class="tab-content">
+      
+      <div class="badge-bar">
+        <span class="cyber-badge" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">AI SERVER INJECTION</span>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 12px;">
+        <h2 style="font-family: 'Orbitron'; color: var(--neon-red); font-size: 18px; letter-spacing: 1px;">HONEY UNBAN</h2>
+        <p style="font-size: 12px; color: var(--text-muted);">CUSTOM CONFIG FILE GENERATION SYSTEM</p>
+      </div>
+
+      <!-- Step 1: UID Input -->
+      <div id="unbanStep1">
+        <input type="text" id="unbanUid" class="cyber-input" placeholder="ENTER BANNED FREE FIRE UID..." onfocus="soundFx.click()" />
+        <button class="cyber-btn" onclick="soundFx.click(); startUnbanCompile()">INITIALIZE UNBAN SEQUENCE</button>
+      </div>
+
+      <!-- Terminal Section -->
+      <div id="unbanTerminalSection" style="display: none;">
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <span>ROOT@HONEY_UNBAN: ~</span>
+            <span id="unbanTermStatus">INITIALIZING</span>
+          </div>
+          <div class="terminal-console" id="unbanLogConsole"></div>
+          <div class="terminal-progress">
+            <div class="terminal-bar" id="unbanBar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unban QR Section -->
+      <div id="unbanQrSection" style="display: none;">
+        <div class="qr-card" style="border-color: var(--neon-cyan);">
+          <div style="font-family: 'Orbitron'; color: var(--neon-cyan); font-size: 13px; margin-bottom: 6px;">
+            FILE UNLOCK SECURITY GATEWAY
+          </div>
+          <img class="qr-img" src="https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG_20261018_144914_721.jpg" alt="Unban QR Code" />
+          <div class="qr-desc">
+            PAY <b>₹174</b> TO DECRYPT & INJECT COMPILED PATCH<br>
+            UPI ID: <b>shukla0912@fam</b><br>
+            NAME: <b>Piyush Shukla</b>
+          </div>
+        </div>
+
+        <input type="text" id="unbanUtrInput" class="cyber-input" placeholder="ENTER ₹174 PAYMENT UTR / TXN ID" onfocus="soundFx.click()" />
+        <button class="cyber-btn" onclick="soundFx.click(); verifyUnbanPayment()">CONFIRM ₹174 & COMPILE FILE</button>
+      </div>
+
+      <button class="telegram-btn" style="margin-top: 6px;" onclick="soundFx.click(); openUnbanTelegram()">CONTACT UNBAN SUPPORT</button>
+
     </div>
 
-    <!-- TERMINAL SCREEN -->
-    <div id="terminalConsole"></div>
-    <div class="progress-wrapper" id="progressWrapper">
-      <div class="progress-fill" id="progressFill"></div>
-      <div class="progress-text" id="progressText">0%</div>
-    </div>
-  </div>
-
-  <!-- SUCCESS POPUP -->
-  <div class="modal-overlay" id="successModal">
-    <div class="modal-box">
-      <h3>✅ PAYMENT VERIFIED!</h3>
-      <p style="font-size: 12px; color: #fff; margin-top: 6px;">₹174 verified successfully! Access Key generated:</p>
-      <div class="key-display">APEXUNBAN_PAID67G5R8</div>
-      <button class="btn" style="background: #2ecc71; color: #000;" onclick="copyAndProceed()">[ COPY KEY & PROCEED ]</button>
-    </div>
-  </div>
-
-  <!-- WARNING POPUP: 85% HOLD -->
-  <div class="modal-overlay" id="adminHoldModal">
-    <div class="modal-box danger">
-      <h3>⚠️ SERVER HOLD: 85%</h3>
-      <p style="font-size: 12px; color: #fff; margin-top: 6px;">50% Unban completed. Contact Admin to clear final balance and unlock account.</p>
-      <button class="btn" style="background: #e74c3c; color: #fff;" onclick="openTelegram()">[ CONTACT ADMIN ]</button>
-    </div>
   </div>
 
   <script>
-    const VALID_KEY = "APEXUNBAN_PAID67G5R8";
-    let voicePlayed = false;
-    let selectedFile = null;
+    // ==========================================
+    // CYBER SYNTHESIZED SOUND EFFECTS (WEB AUDIO)
+    // ==========================================
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
 
-    function playWelcomeVoice() {
-      if (!voicePlayed) {
-        const audio = document.getElementById("bgVoice");
-        if (audio) {
-          audio.play().then(() => { voicePlayed = true; }).catch(() => {});
-        }
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new AudioCtx();
       }
-    }
-
-    function showGateway() {
-      playWelcomeVoice();
-      document.getElementById("keyPortal").style.display = "none";
-      document.getElementById("paymentSection").style.display = "block";
-    }
-
-    function backToKeyPortal() {
-      document.getElementById("paymentSection").style.display = "none";
-      document.getElementById("keyPortal").style.display = "block";
-    }
-
-    function openTelegram() {
-      window.location.href = "tg://resolve?domain=ROYAL_UNBAN";
-      setTimeout(function() {
-        window.location.href = "https://t.me/ROYAL_UNBAN";
-      }, 500);
-    }
-
-    function handleFileSelect(e) {
-      if (e.target.files && e.target.files[0]) {
-        selectedFile = e.target.files[0];
-        document.getElementById("uploadLabel").innerText = "✓ " + selectedFile.name.substring(0, 18);
-        document.getElementById("ocrStatus").innerText = "Image selected. Ready to scan.";
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
       }
+      return audioCtx;
     }
 
-    // Real Screenshot Scanning using Tesseract OCR
-    async function verifyPaymentScreenshot() {
-      playWelcomeVoice();
-      const utr = document.getElementById("txnId").value.trim();
-      const statusBox = document.getElementById("ocrStatus");
-      const verifyBtn = document.getElementById("verifyBtn");
-
-      if (!selectedFile && utr.length < 10) {
-        alert("Please upload payment screenshot or enter valid 12-digit UTR!");
-        return;
-      }
-
-      verifyBtn.disabled = true;
-      verifyBtn.innerText = "[ SCANNING IMAGE... ]";
-      statusBox.innerText = "Analyzing screenshot text with OCR...";
-
-      let isValidPayment = false;
-
-      if (selectedFile) {
+    const soundFx = {
+      // Crisp Cyber Click / Tap Sound
+      click: function() {
         try {
-          const worker = await Tesseract.createWorker('eng');
-          const ret = await worker.recognize(selectedFile);
-          const fullText = ret.data.text.toLowerCase();
-          await worker.terminate();
+          const ctx = getAudioContext();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(800, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + 0.04);
+          
+          gain.gain.setValueAtTime(0.2, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.04);
+          
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          
+          osc.start();
+          osc.stop(ctx.currentTime + 0.05);
+        } catch (e) {}
+      },
 
-          // Checking if text contains payment indicators
-          const hasAmount = fullText.includes("174");
-          const hasReceiver = fullText.includes("apex") || fullText.includes("rohit") || fullText.includes("nyes");
-          const hasSuccessStatus = fullText.includes("paid") || fullText.includes("success") || fullText.includes("completed");
+      // High-Tech Terminal Beep / Key Sound
+      terminalBeep: function(freq = 950) {
+        try {
+          const ctx = getAudioContext();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime);
+          osc.frequency.setValueAtTime(freq * 1.2, ctx.currentTime + 0.02);
+          
+          gain.gain.setValueAtTime(0.15, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+          
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          
+          osc.start();
+          osc.stop(ctx.currentTime + 0.07);
+        } catch (e) {}
+      },
 
-          if (hasAmount && (hasReceiver || hasSuccessStatus)) {
-            isValidPayment = true;
-          } else if (hasAmount || (hasReceiver && hasSuccessStatus)) {
-            isValidPayment = true;
-          }
-        } catch (err) {
-          console.error("OCR Error:", err);
-        }
+      // Completion Success Fanfare
+      successChime: function() {
+        try {
+          const ctx = getAudioContext();
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, index) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            const startTime = ctx.currentTime + (index * 0.08);
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, startTime);
+            gain.gain.setValueAtTime(0.18, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.25);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + 0.26);
+          });
+        } catch (e) {}
       }
+    };
 
-      // Fallback: Agar OCR detect na kare par user ne 10+ digit UTR daala ho
-      if (!isValidPayment && utr.length >= 10) {
-        isValidPayment = true;
+    // ==========================================
+    // GALLERY SETUP
+    // ==========================================
+    const idGallery = [
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/game_Screenshot_20261018-131654.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0273.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0272.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0271.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0270.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0269.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0268.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0267.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0266.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0265.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0264.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0263.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0262.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0253.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0252.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0251.jpg",
+      "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0250.jpg"
+    ];
+
+    let currentSlide = 0;
+    let promoUsed = false;
+
+    window.onload = function() {
+      const rail = document.getElementById("thumbRail");
+      idGallery.forEach((imgSrc, i) => {
+        const item = document.createElement("div");
+        item.className = "thumb-node" + (i === 0 ? " active-thumb" : "");
+        item.innerHTML = `<img src="${imgSrc}" alt="thumb" />`;
+        item.onclick = () => {
+          soundFx.click();
+          selectSlide(i);
+        };
+        rail.appendChild(item);
+      });
+    };
+
+    function showTab(type, btn) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+      btn.classList.add("active");
+      if (type === 'store') document.getElementById("tabStore").classList.add("active");
+      if (type === 'unban') document.getElementById("tabUnban").classList.add("active");
+    }
+
+    function selectSlide(idx) {
+      currentSlide = idx;
+      document.getElementById("mainDisplayImg").src = idGallery[currentSlide];
+      document.getElementById("slideIndexText").innerText = currentSlide + 1;
+      
+      const thumbs = document.querySelectorAll(".thumb-node");
+      thumbs.forEach(t => t.classList.remove("active-thumb"));
+      if (thumbs[idx]) {
+        thumbs[idx].classList.add("active-thumb");
+        thumbs[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
+    }
 
-      verifyBtn.disabled = false;
-      verifyBtn.innerText = "[ VERIFY ₹174 & GET KEY ]";
+    function stepSlide(step) {
+      let next = currentSlide + step;
+      if (next < 0) next = idGallery.length - 1;
+      if (next >= idGallery.length) next = 0;
+      selectSlide(next);
+    }
 
-      if (isValidPayment) {
-        statusBox.innerText = "✓ Payment Proof Verified!";
-        document.getElementById("successModal").style.display = "flex";
+    // Promo Code
+    function applyPromo() {
+      const code = document.getElementById("promoInput").value.trim().toUpperCase();
+      if (code === "APEX1000") {
+        promoUsed = true;
+        document.getElementById("dealPriceText").innerText = "₹1,500";
+        document.getElementById("qrPayableAmount").innerText = "₹1,500";
+        soundFx.successChime();
+        alert("PROMO CODE APPLIED! Deal Price is now ₹1,500.");
       } else {
-        statusBox.innerText = "❌ Verification Failed. Make sure amount ₹174 & UPI ID are clearly visible.";
-        alert("Verification Failed! Yeh screenshot ₹174 payment ka proof nahi lag raha. Kripya sahi screenshot dalein ya UTR number bharein.");
+        alert("Invalid Promo Code! Use APEX1000.");
       }
     }
 
-    function copyAndProceed() {
-      navigator.clipboard.writeText(VALID_KEY).catch(() => {});
-      document.getElementById("successModal").style.display = "none";
-      document.getElementById("paymentSection").style.display = "none";
-      document.getElementById("keyPortal").style.display = "block";
-      document.getElementById("keyInput").value = VALID_KEY;
-    }
-
-    function verifyKey() {
-      const enteredKey = document.getElementById("keyInput").value.trim();
-      if (enteredKey === VALID_KEY) {
-        document.getElementById("keyPortal").style.display = "none";
-        document.getElementById("uidPortal").style.display = "block";
-      } else {
-        alert("Invalid Key! Click on [GET KEY] to complete payment.");
-        showGateway();
+    // Store Payment Verify
+    function verifyStorePayment() {
+      const utr = document.getElementById("utrStoreInput").value.trim();
+      if (utr.length < 8) {
+        alert("Please enter a valid 12-digit UTR/Transaction ID.");
+        return;
       }
+      soundFx.successChime();
+      alert("Payment received for verification! Opening seller chat...");
+      openStoreTelegram();
     }
 
-    function logTerminal(msg) {
-      const box = document.getElementById("terminalConsole");
-      box.innerHTML += `<div>&gt; ${msg}</div>`;
-      box.scrollTop = box.scrollHeight;
+    // Telegram Pre-Filled Links
+    function openStoreTelegram() {
+      let text = promoUsed 
+        ? "Sir maine promo code use kiya hai, maine aapka channel ko follow karke rakha hoon. Isi wajah se mereko 1500 me yeh wala id de dijiye."
+        : "Sir main yeh Free Fire account buy karna chahta hoon, details share kijiye.";
+      window.location.href = `https://t.me/ROYAL_UNBAN?text=${encodeURIComponent(text)}`;
     }
 
-    function startTerminalProcess() {
-      const uid = document.getElementById("uidInput").value.trim();
+    function openUnbanTelegram() {
+      const text = "Sir main id unban karna chahta hoon, paid me ₹174 pay karna chahta hoon, aap mujhe apna keyword dijiye.";
+      window.location.href = `https://t.me/ROYAL_UNBAN?text=${encodeURIComponent(text)}`;
+    }
+
+    // Terminal Injection Animation with Real-time Coding Sounds
+    function appendTerminal(line, freq = 900) {
+      soundFx.terminalBeep(freq);
+      const log = document.getElementById("unbanLogConsole");
+      log.innerHTML += `<div>&gt; ${line}</div>`;
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function startUnbanCompile() {
+      const uid = document.getElementById("unbanUid").value.trim();
       if (!uid) {
-        alert("Please enter target UID!");
+        alert("Please enter target UID first!");
         return;
       }
 
-      document.getElementById("uidPortal").style.display = "none";
-      document.getElementById("terminalConsole").style.display = "block";
-      document.getElementById("progressWrapper").style.display = "block";
+      document.getElementById("unbanStep1").style.display = "none";
+      document.getElementById("unbanTerminalSection").style.display = "block";
+      
+      const log = document.getElementById("unbanLogConsole");
+      const bar = document.getElementById("unbanBar");
+      const status = document.getElementById("unbanTermStatus");
+      
+      log.innerHTML = "";
+      status.innerText = "CALCULATING DATA...";
 
-      logTerminal(`SESSION STARTED // UID: ${uid}`);
-      logTerminal(`50% ADVANCE PAYMENT CONFIRMED: ₹174`);
-      logTerminal(`CONNECTING TO VIP UNBAN CLUSTER...`);
+      appendTerminal("Connecting to Free Fire Secure Subsystems...", 800);
+      appendTerminal(`Searching shadow manifest for UID: ${uid}`, 850);
 
-      let progress = 0;
-      const timer = setInterval(() => {
-        progress += 5;
-        if (progress <= 85) {
-          document.getElementById("progressFill").style.width = progress + "%";
-          document.getElementById("progressText").innerText = progress + "%";
+      let p = 0;
+      const t = setInterval(() => {
+        p += 10;
+        bar.style.width = p + "%";
+        soundFx.terminalBeep(600 + p * 8);
 
-          if (progress === 30) logTerminal("INJECTING ADVANCE CREDENTIALS...");
-          if (progress === 60) logTerminal("REMOVING TEMP BLACKLIST RESTRICTION...");
+        if (p === 30) {
+          status.innerText = "DOWNLOADING...";
+          appendTerminal("Downloading Critical Data [cluster_log_0x44]...", 920);
+        }
+        if (p === 60) {
+          status.innerText = "COMPILING NODES...";
+          appendTerminal("Compiling Nodes: Building custom patch file...", 1050);
+          appendTerminal("import freefire_core as ff; init_patch_sequence()", 1100);
+        }
+        if (p === 85) {
+          status.innerText = "DECRYPTING...";
+          appendTerminal("Decrypting payload block tables... [STATUS: 85%]", 1200);
         }
 
-        if (progress >= 85) {
-          clearInterval(timer);
-          logTerminal("SYSTEM HOLD: 85% REACHED.");
+        if (p >= 100) {
+          clearInterval(t);
+          status.innerText = "PAYMENT REQUIRED";
+          soundFx.successChime();
+          appendTerminal(`FILE READY: config_unban_${uid}.bin`, 1300);
+          appendTerminal("Security Clearance pending: Pay ₹174 to unlock direct injection module.", 1100);
+          
           setTimeout(() => {
-            document.getElementById("adminHoldModal").style.display = "flex";
+            document.getElementById("unbanQrSection").style.display = "block";
           }, 600);
         }
-      }, 400);
+      }, 320);
+    }
+
+    function verifyUnbanPayment() {
+      const utr = document.getElementById("unbanUtrInput").value.trim();
+      if (utr.length < 8) {
+        alert("Please enter a valid Transaction / UTR ID!");
+        return;
+      }
+      soundFx.successChime();
+      alert("Transaction verified! Contacting unban support for activation keyword.");
+      openUnbanTelegram();
     }
   </script>
 
