@@ -51,7 +51,6 @@
       box-shadow: 0 0 35px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(0, 0, 0, 0.85);
     }
 
-    /* Top Brand Header */
     .brand-header {
       text-align: center;
       margin-bottom: 16px;
@@ -71,7 +70,6 @@
       text-shadow: 0 0 10px var(--neon-cyan);
     }
 
-    /* Tabs */
     .tab-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -110,7 +108,6 @@
       display: block;
     }
 
-    /* Image Gallery Slider */
     .badge-bar {
       display: flex;
       justify-content: center;
@@ -216,7 +213,6 @@
       object-fit: cover;
     }
 
-    /* Price / Status Box */
     .info-strip {
       background: rgba(0, 0, 0, 0.45);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -237,7 +233,6 @@
       margin-bottom: 6px;
     }
 
-    /* Promo Code Input */
     .promo-wrap {
       display: flex;
       gap: 8px;
@@ -274,7 +269,6 @@
       cursor: pointer;
     }
 
-    /* QR Code Display Block */
     .qr-card {
       background: #02050b;
       border: 1px solid var(--neon-yellow);
@@ -308,7 +302,6 @@
       color: var(--neon-cyan);
     }
 
-    /* Buttons */
     .cyber-btn {
       width: 100%;
       background: linear-gradient(135deg, #00f3ff, #0077ff);
@@ -351,7 +344,6 @@
       transform: scale(0.98);
     }
 
-    /* Terminal Window */
     .terminal-box {
       background: #020408;
       border: 1px solid var(--neon-green);
@@ -403,12 +395,10 @@
 
   <div class="cyber-container">
     
-    <!-- Title -->
     <div class="brand-header">
       <div class="brand-title">HONEY PORTAL | <span>ELITE CYBER HUB</span></div>
     </div>
 
-    <!-- Navigation Tabs -->
     <div class="tab-switch">
       <button class="tab-btn active" onclick="soundFx.click(); showTab('store', this)">
         🛒 BUY FF ID
@@ -422,10 +412,9 @@
     <div id="tabStore" class="tab-content active">
       
       <div class="badge-bar">
-        <span class="cyber-badge">VERIFIED LEVEL-78 ACC</span>
+        <span class="cyber-badge">VERIFIED LEVEL-68 ACC</span>
       </div>
 
-      <!-- Slider Container -->
       <div class="slider-card">
         <div class="slider-viewport">
           <div class="slide-arrow left" onclick="soundFx.click(); stepSlide(-1)">⟨</div>
@@ -437,7 +426,6 @@
         <div class="thumb-strip" id="thumbRail"></div>
       </div>
 
-      <!-- Pricing Strip -->
       <div class="info-strip">
         <div class="info-row">
           <span style="color: var(--text-muted);">EXCLUSIVE ACC PRICE</span>
@@ -449,13 +437,11 @@
         </div>
       </div>
 
-      <!-- Promo Code -->
       <div class="promo-wrap">
         <input type="text" id="promoInput" class="cyber-input" placeholder="ENTER PROMO CODE (APEX1000)" onfocus="soundFx.click()" />
         <button class="apply-btn" onclick="soundFx.click(); applyPromo()">APPLY</button>
       </div>
 
-      <!-- UPI QR Code for Store -->
       <div class="qr-card">
         <img class="qr-img" src="https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG_20261018_144914_721.jpg" id="storeQrImg" alt="UPI QR Code" />
         <div class="qr-desc">
@@ -484,13 +470,11 @@
         <p style="font-size: 12px; color: var(--text-muted);">CUSTOM CONFIG FILE GENERATION SYSTEM</p>
       </div>
 
-      <!-- Step 1: UID Input -->
       <div id="unbanStep1">
         <input type="text" id="unbanUid" class="cyber-input" placeholder="ENTER BANNED FREE FIRE UID..." onfocus="soundFx.click()" />
         <button class="cyber-btn" onclick="soundFx.click(); startUnbanCompile()">INITIALIZE UNBAN SEQUENCE</button>
       </div>
 
-      <!-- Terminal Section -->
       <div id="unbanTerminalSection" style="display: none;">
         <div class="terminal-box">
           <div class="terminal-header">
@@ -504,7 +488,6 @@
         </div>
       </div>
 
-      <!-- Unban QR Section -->
       <div id="unbanQrSection" style="display: none;">
         <div class="qr-card" style="border-color: var(--neon-cyan);">
           <div style="font-family: 'Orbitron'; color: var(--neon-cyan); font-size: 13px; margin-bottom: 6px;">
@@ -529,24 +512,16 @@
   </div>
 
   <script>
-    // ==========================================
-    // CYBER SYNTHESIZED SOUND EFFECTS (WEB AUDIO)
-    // ==========================================
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
 
     function getAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new AudioCtx();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      if (!audioCtx) audioCtx = new AudioCtx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
       return audioCtx;
     }
 
     const soundFx = {
-      // Crisp Cyber Click / Tap Sound
       click: function() {
         try {
           const ctx = getAudioContext();
@@ -568,7 +543,6 @@
         } catch (e) {}
       },
 
-      // High-Tech Terminal Beep / Key Sound
       terminalBeep: function(freq = 950) {
         try {
           const ctx = getAudioContext();
@@ -590,7 +564,6 @@
         } catch (e) {}
       },
 
-      // Completion Success Fanfare
       successChime: function() {
         try {
           const ctx = getAudioContext();
@@ -614,9 +587,6 @@
       }
     };
 
-    // ==========================================
-    // GALLERY SETUP
-    // ==========================================
     const idGallery = [
       "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/game_Screenshot_20261018-131654.jpg",
       "https://raw.githubusercontent.com/Rajsekhar001/freefireid/main/IMG-20261018-WA0273.jpg",
@@ -682,7 +652,6 @@
       selectSlide(next);
     }
 
-    // Promo Code
     function applyPromo() {
       const code = document.getElementById("promoInput").value.trim().toUpperCase();
       if (code === "APEX1000") {
@@ -696,7 +665,6 @@
       }
     }
 
-    // Store Payment Verify
     function verifyStorePayment() {
       const utr = document.getElementById("utrStoreInput").value.trim();
       if (utr.length < 8) {
@@ -708,7 +676,6 @@
       openStoreTelegram();
     }
 
-    // Telegram Pre-Filled Links
     function openStoreTelegram() {
       let text = promoUsed 
         ? "Sir maine promo code use kiya hai, maine aapka channel ko follow karke rakha hoon. Isi wajah se mereko 1500 me yeh wala id de dijiye."
@@ -717,11 +684,10 @@
     }
 
     function openUnbanTelegram() {
-      const text = "Sir main id unban karna chahta hoon, paid me ₹174 pay karna chahta hoon, aap mujhe apna keyword dijiye.";
+      const text = "Sir main id unban karna chahta hoon, paid me ₹174 pay karna chahta hoon, aap mujhe apna QR dijiye.";
       window.location.href = `https://t.me/ROYAL_UNBAN?text=${encodeURIComponent(text)}`;
     }
 
-    // Terminal Injection Animation with Real-time Coding Sounds
     function appendTerminal(line, freq = 900) {
       soundFx.terminalBeep(freq);
       const log = document.getElementById("unbanLogConsole");
